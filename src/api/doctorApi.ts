@@ -54,6 +54,16 @@ export const sendDoctorLogoutData = async () => {
     return response
   } catch (error) {
     throw error
+  } 
+}
+
+export const sendDoctorGoogleAuthData = async (token: string) => {
+  try {
+    const response = await api.post(`${API_URL}/google-auth`, { token })
+    console.log(response, 'the response from the doctor Google auth is coming')
+    return response
+  } catch (error) {
+    throw error
   }
 }
 

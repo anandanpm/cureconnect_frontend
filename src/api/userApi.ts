@@ -54,3 +54,14 @@ export const sendLogoutData = async () => {
     throw error;
   }
 };
+
+export const sendGoogleAuthData = async (token: string) => {
+  try {
+    const response = await api.post(`${API_URL}/google-auth`, { token });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+

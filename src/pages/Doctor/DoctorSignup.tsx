@@ -3,12 +3,13 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { signupDoctor, clearError } from '../../redux/doctorSlice';
+import { signupDoctor, clearError,googleAuthDoctor } from '../../redux/doctorSlice';
 import { RootState, AppDispatch } from '../../redux/store';
 import { Snackbar, Alert } from '@mui/material';
 import './DoctorSignup.scss';
-import Googleimage from '../../assets/free-icon-google-300221 1.png';
 import { Link } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
+import {jwtDecode} from "jwt-decode";
 
 const validationSchema = Yup.object({
   username: Yup.string()
@@ -86,9 +87,21 @@ export default function DoctorSignupForm() {
     },
   });
 
-  const handleGoogleSignIn = () => {
-    console.log('Google sign in clicked');
-    // Implement Google sign in logic for doctors
+  const handleGoogleSignIn = async (credentialResponse: any) => {
+    try {
+      const decoded: any = jwtDecode(credentialResponse.credential);
+      console.log(decoded);
+      await dispatch(googleAuthDoctor(credentialResponse.credential)).unwrap();
+      setSnackbarSeverity('success');
+      setSnackbarMessage('Google sign-in successful!');
+      setSnackbarOpen(true);
+      navigate('/doctor'); 
+    } catch (error: any) {
+      console.error('Google sign-in error:', error);
+      setSnackbarSeverity('error');
+      setSnackbarMessage('Google sign-in failed. Please try again.');
+      setSnackbarOpen(true);
+    }
   };
 
   return (
@@ -183,10 +196,18 @@ export default function DoctorSignupForm() {
 
         <div className="divider">Or</div>
 
-        <button type="button" className="google-button" onClick={handleGoogleSignIn}>
-          <img src={Googleimage} alt="Google" />
-          Sign in with Google
-        </button>
+        <div className="google-login-wrapper">
+          <GoogleLogin
+            onSuccess={handleGoogleSignIn}
+            onError={() => {
+              console.log('Login Failed');
+              setSnackbarSeverity('error');
+              setSnackbarMessage('Google sign-in failed. Please try again.');
+              setSnackbarOpen(true);
+            }}
+            useOneTap
+          />
+          </div>
 
         <div className="login-link">
           Already have an account? <Link to="/doctor-login">Login</Link>

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { sendDoctorSignupData, sendDoctorLoginData, sendDoctorLogoutData, sendDoctorOtpData, resendDoctorOtpData } from '../api/doctorApi';
+import { sendDoctorSignupData, sendDoctorLoginData, sendDoctorLogoutData, sendDoctorOtpData, resendDoctorOtpData,sendDoctorGoogleAuthData } from '../api/doctorApi';
 
 interface DoctorState {
   username: string;
@@ -77,6 +77,18 @@ export const logoutDoctor = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Doctor logout failed');
+    }
+  }
+);
+
+export const googleAuthDoctor = createAsyncThunk(
+  'doctor/googleAuth',
+  async (token: string, { rejectWithValue }) => {
+    try {
+      const response = await sendDoctorGoogleAuthData(token);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message || 'Doctor Google authentication failed');
     }
   }
 );
@@ -170,6 +182,23 @@ const doctorSlice = createSlice({
         state.verified = false;
       })
       .addCase(logoutDoctor.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(googleAuthDoctor.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(googleAuthDoctor.fulfilled, (state, action) => {
+        state.loading = false;
+        state.username = action.payload.username;
+        state.email = action.payload.email;
+        state.isActive = action.payload.isActive;
+        state.verified = action.payload.verified;
+        state.role = action.payload.role;
+        state.error = null;
+      })
+      .addCase(googleAuthDoctor.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

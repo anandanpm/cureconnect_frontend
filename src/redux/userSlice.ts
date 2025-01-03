@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { sendSignupData, sendLoginData,sendLogoutData } from '../api/userApi';
+import { sendSignupData, sendLoginData,sendLogoutData,sendGoogleAuthData } from '../api/userApi';
 
 interface UserState {
   username: string;
@@ -54,6 +54,19 @@ export const logoutUser = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Logout failed');
+    }
+  }
+);
+
+export const googleAuth = createAsyncThunk(
+  'user/googleAuth',
+  async (token: string, { rejectWithValue }) => {
+    try {
+      const response = await sendGoogleAuthData(token);
+      console.log(response,'from the backend is comming')
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message || 'Google authentication failed');
     }
   }
 );
@@ -120,6 +133,22 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string || 'An unexpected error occurred';
       })
+      .addCase(googleAuth.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(googleAuth.fulfilled, (state, action) => {
+        state.loading = false;
+        state.username = action.payload.username;
+        state.email = action.payload.email;
+        state.role = action.payload.role;
+        state.isActive = true;
+        state.error = null;
+      })
+      .addCase(googleAuth.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string || 'An unexpected error occurred';
+      });
   },
 });
 
