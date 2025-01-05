@@ -1,3 +1,4 @@
+
 @use "sass:color";
 @import url('https://fonts.googleapis.com/css2?family=Lexend+Tera:wght@400;600;700&display=swap');
 
@@ -94,6 +95,16 @@ $header-height: 3rem;
     background-color: #fff;
     padding: 1ch;
     height: 100%;
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .avatar-dropdown {
+      position: relative;
+      display: inline-block;
+    }
   }
 
   &__logo {
@@ -181,7 +192,26 @@ $header-height: 3rem;
     @include gradient-button;
     font-size: 0.9rem;
   }
+
+  &__user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    @include transition;
+
+    &:hover {
+      background-color: $color-gray-100;
+    }
+  }
+
+  &__user-name {
+    font-family: 'Lexend Tera', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $color-gray-800;
+  }
 }
-
-
 

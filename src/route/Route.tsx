@@ -13,6 +13,7 @@ import DocOtp from '../pages/Doctor/DoctorOtp';
 import Doclogin from '../pages/Doctor/DoctorLogin';
 import AdminLogin from '../pages/Admin/AdminLogin';
 import AdminDashboard from '../pages/Admin/AdminDashboard';
+import Profile from '../pages/User/Profile';
 
 export const routes: RouteObject[] = [
   // Standalone OTP routes (no layout)
@@ -37,7 +38,8 @@ export const routes: RouteObject[] = [
       { index: true, element: <Mainpage /> },
       { path: 'signup', element: <SignupPage /> },
       { path: 'login', element: <LoginPage /> },
-      { path: 'about', element: <About /> }
+      { path: 'about', element: <About /> },
+      {path:'profile',element:<Profile/>}
     ]
   },
 

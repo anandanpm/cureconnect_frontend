@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:3000/user'
+const API_URL = import.meta.env.VITE_USER_API_URL
 
 const api = axios.create({
   baseURL: API_URL,
@@ -58,6 +58,23 @@ export const sendLogoutData = async () => {
 export const sendGoogleAuthData = async (token: string) => {
   try {
     const response = await api.post(`${API_URL}/google-auth`, { token });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateUserProfile = async (userData: {
+  username: string;
+  email: string;
+  phone: string;
+  age: string;
+  gender: string;
+  address: string;
+  profile_pic?: string;
+}) => {
+  try {
+    const response = await api.put(`${API_URL}/update-profile`, userData);
     return response.data;
   } catch (error) {
     throw error;

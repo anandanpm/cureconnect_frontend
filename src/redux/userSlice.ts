@@ -1,10 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { sendSignupData, sendLoginData,sendLogoutData,sendGoogleAuthData } from '../api/userApi';
+import { sendSignupData, sendLoginData,sendLogoutData,sendGoogleAuthData,updateUserProfile } from '../api/userApi';
 
 interface UserState {
   username: string;
   email: string;
   role: string;
+  phone:string;
+  age:string|null;
+  profile_pic:string;
+  gender:string;
+  address:string;
   isActive: boolean;
   loading: boolean;
   error: string | null;
@@ -15,6 +20,11 @@ const initialState: UserState = {
   username: '',
   email: '',
   role: '',
+  phone:'',
+  age:'',
+  profile_pic:'',
+  gender:'',
+  address:'',
   isActive:false,
   loading: false,
   error: null,
@@ -70,6 +80,33 @@ export const googleAuth = createAsyncThunk(
     }
   }
 );
+
+export const updateProfile = createAsyncThunk(
+  'user/updateProfile',
+  async (userData: {
+    username: string;
+    email: string;
+    phone: string;
+    age: string;
+    gender: string;
+    address: string;
+    profile_pic?: string;
+  }, { rejectWithValue }) => {
+    try {
+      const response = await updateUserProfile(userData);
+      console.log(response,'the response is comming')
+      if (response.user) {
+        return response.user;
+       
+      } else {
+        return rejectWithValue('Invalid response data');
+      }
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message || 'Profile update failed');
+    }
+  }
+);
+
 
 const userSlice = createSlice({
   name: 'user',
@@ -148,8 +185,30 @@ const userSlice = createSlice({
       .addCase(googleAuth.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string || 'An unexpected error occurred';
-      });
-  },
+      })
+      .addCase(updateProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log(action.payload,'action have some problem ')
+        if (action.payload) {
+          console.log(action.payload,'the action payload is comming')
+          state.username = action.payload.username || state.username;
+          state.email = action.payload.email || state.email;
+          state.phone = action.payload.phone || state.phone;
+          state.age = action.payload.age || state.age;
+          state.gender = action.payload.gender || state.gender;
+          state.address = action.payload.address || state.address;
+          state.profile_pic = action.payload.profile_pic || state.profile_pic;
+        }
+        state.error = null;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string || 'An unexpected error occurred';
+      });  },
 });
 
 export const { clearError, logout } = userSlice.actions;

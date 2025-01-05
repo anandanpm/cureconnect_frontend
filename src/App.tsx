@@ -188,10 +188,9 @@ import './App.scss';
 import { routes } from '../src/route/Route';
 
 const router = createBrowserRouter(routes);
-
 const App: React.FC = () => {
   return (
-    <GoogleOAuthProvider clientId="608044793656-ijtreinvo4rrlavpjbrmjsf01n7rg5fr.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <Provider store={store}>
         <RouterProvider router={router} />
       </Provider>
