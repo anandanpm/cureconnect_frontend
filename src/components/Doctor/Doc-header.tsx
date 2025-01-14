@@ -48,12 +48,12 @@ const DocHeader: React.FC = () => {
         </nav>
         <div className="header__actions">
           {!isActive && (
-            <Link to="docsignup" className="header__signup">SignUp</Link>
+            <Link to="/doctor/signup" className="header__signup">SignUp</Link>
           )}
           {isActive ? (
             <button onClick={handleLogout} className="header__login" type="button">Logout</button>
           ) : (
-            <Link to="doclogin" className="header__login">LogIn</Link>
+            <Link to="/doctor/login" className="header__login">LogIn</Link>
           )}
         </div>
       </div>

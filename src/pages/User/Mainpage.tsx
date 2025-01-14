@@ -1,8 +1,14 @@
 import React from 'react';
 import './Mainpage.scss';
+import { useNavigate } from 'react-router-dom'
 import doctorImage from '../../assets/image 17.png';
 
 const Mainpage:React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleBookAppointment = () => {
+    navigate('/doctordetails');
+  };
     return (
         <section className="hero">
           <div className="hero__container">
@@ -23,7 +29,7 @@ const Mainpage:React.FC = () => {
                 Embracing A Healthier, Smarter Way To Care For Yourself And
                 Your Loved Ones.
               </p>
-              <button className="hero__cta">Book Appointments</button>
+              <button className="hero__cta" onClick={handleBookAppointment}>Book Appointments</button>
             </div>
             <div className="hero__image-wrapper">
               <img src={doctorImage} alt="Professional doctor with stethoscope" className="hero__image" />

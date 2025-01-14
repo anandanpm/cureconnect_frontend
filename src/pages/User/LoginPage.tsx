@@ -3,8 +3,9 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, clearError } from '../../redux/userSlice';
-import google from '../../assets/free-icon-google-300221 1.png';
+import { loginUser, clearError, googleAuth } from '../../redux/userSlice';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 import './LoginPage.scss';
 
 // Define the login schema
@@ -79,6 +80,17 @@ const LoginPage: React.FC = () => {
     isSubmitting,
   } = formik;
 
+  const handleGoogleSignIn = async (credentialResponse: any) => {
+    try {
+      const decoded: any = jwtDecode(credentialResponse.credential);
+      console.log(decoded); // Log the decoded token to see its contents
+      await dispatch(googleAuth(credentialResponse.credential) as any);
+      // Navigation is handled by the useEffect hook watching isActive
+    } catch (error: any) {
+      console.error('Google sign-in error:', error);
+    }
+  };
+
   return (
     <div className="login-container">
       <div className="login-card">
@@ -138,16 +150,13 @@ const LoginPage: React.FC = () => {
 
           {error && <div className="error-message">{error}</div>}
 
-          <button 
-            type="button" 
-            className="google-button"
-          >
-            <img 
-              src={google}
-              alt="Google logo" 
-            />
-            Sign in with Google
-          </button>
+          <GoogleLogin
+            onSuccess={handleGoogleSignIn}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+            useOneTap
+          />
 
           <div className="signup-link">
             Don't have an account? <Link to={'/signup'}>signup</Link>
@@ -158,4 +167,5 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage
+export default LoginPage;
+

@@ -67,3 +67,29 @@ export const sendDoctorGoogleAuthData = async (token: string) => {
   }
 }
 
+export const updateDoctorProfileData = async (profileData: {
+  username?: string;
+  email?: string;
+  phone?: string;
+  age?: string;
+  gender?: string;
+  address?: string;
+  clinic_name?: string;
+  about?: string;
+  education?: string;
+  experience?: string;
+  medical_license?: string;
+  department?: string;
+  certification?: string;
+  profile_pic?: string;
+  _id:string;
+}) => {
+  try {
+    const response = await api.put(`${API_URL}/profile`, profileData)
+    console.log(response, 'the response from updating doctor profile is coming')
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+

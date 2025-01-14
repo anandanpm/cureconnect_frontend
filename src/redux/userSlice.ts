@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { sendSignupData, sendLoginData,sendLogoutData,sendGoogleAuthData,updateUserProfile } from '../api/userApi';
+import { sendSignupData, sendLoginData,sendLogoutData,sendGoogleAuthData,updateUserProfile, fetchVerifiedDoctors } from '../api/userApi';
 
 interface UserState {
   username: string;
@@ -12,6 +12,8 @@ interface UserState {
   address:string;
   isActive: boolean;
   loading: boolean;
+  _id:string;
+  doctor: any[];
   error: string | null;
   
 }
@@ -25,6 +27,8 @@ const initialState: UserState = {
   profile_pic:'',
   gender:'',
   address:'',
+  _id:'',
+  doctor: [],
   isActive:false,
   loading: false,
   error: null,
@@ -91,6 +95,7 @@ export const updateProfile = createAsyncThunk(
     gender: string;
     address: string;
     profile_pic?: string;
+    _id:string;
   }, { rejectWithValue }) => {
     try {
       const response = await updateUserProfile(userData);
@@ -103,6 +108,18 @@ export const updateProfile = createAsyncThunk(
       }
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Profile update failed');
+    }
+  }
+);
+
+export const getVerifiedDoctors = createAsyncThunk(
+  'user/getVerifiedDoctors',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetchVerifiedDoctors();
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch verified doctors');
     }
   }
 );
@@ -148,6 +165,12 @@ const userSlice = createSlice({
         state.username = action.payload.username;
         state.email = action.payload.email;
         state.role = action.payload.role;
+        state._id = action.payload._id;
+        state.address = action.payload.address;
+        state.age = action.payload.age;
+        state.phone = action.payload.phone;
+        state.gender = action.payload.gender;
+        state.profile_pic = action.payload.profile_pic;
         state.isActive = true;
         state.error = null;
       })
@@ -164,6 +187,11 @@ const userSlice = createSlice({
         state.username = '';
         state.email = '';
         state.role = '';
+        state._id = ''; 
+        state.profile_pic = '';
+        state.gender = '';
+        state.age = '';
+        state.phone = '';
         state.isActive = false; 
       })
       .addCase(logoutUser.rejected, (state, action) => {
@@ -179,6 +207,12 @@ const userSlice = createSlice({
         state.username = action.payload.username;
         state.email = action.payload.email;
         state.role = action.payload.role;
+        state._id = action.payload._id;
+        state.address = action.payload.address;
+        state.age = action.payload.age;
+        state.phone = action.payload.phone;
+        state.gender = action.payload.gender;
+        state.profile_pic = action.payload.profile_pic;
         state.isActive = true;
         state.error = null;
       })
@@ -202,13 +236,28 @@ const userSlice = createSlice({
           state.gender = action.payload.gender || state.gender;
           state.address = action.payload.address || state.address;
           state.profile_pic = action.payload.profile_pic || state.profile_pic;
+          state._id = action.payload._id || state._id;
         }
         state.error = null;
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string || 'An unexpected error occurred';
-      });  },
+      })
+      .addCase(getVerifiedDoctors.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getVerifiedDoctors.fulfilled, (state, action) => {
+        state.loading = false;
+        state.doctor = action.payload;
+        state.error = null;
+      })
+      .addCase(getVerifiedDoctors.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string || 'An unexpected error occurred';
+      });
+     },
 });
 
 export const { clearError, logout } = userSlice.actions;

@@ -1,0 +1,120 @@
+
+  
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.patient-list {
+  padding: 40px;
+  font-family: 'Poppins', sans-serif;
+  
+  &__title {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #333;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  &__loading,
+  &__error {
+    font-size: 20px;
+    text-align: center;
+    margin-top: 40px;
+    color: #666;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+    
+    th, td {
+      padding: 15px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #dee2e6;
+    }
+
+    td {
+      background-color: #ffffff;
+      border-top: 1px solid #dee2e6;
+      border-bottom: 1px solid #dee2e6;
+
+      &:first-child {
+        border-left: 1px solid #dee2e6;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+      }
+
+      &:last-child {
+        border-right: 1px solid #dee2e6;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+      }
+    }
+
+    tr {
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  &__profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &__toggle-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.active {
+      background-color: #ff4757;
+      color: white;
+
+      &:hover {
+        background-color: #ff6b81;
+        box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+      }
+    }
+
+    &.blocked {
+      background-color: #2ed573;
+      color: white;
+
+      &:hover {
+        background-color: #7bed9f;
+        box-shadow: 0 5px 15px rgba(46, 213, 115, 0.4);
+      }
+    }
+  }
+}
+

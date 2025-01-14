@@ -111,7 +111,8 @@ export default function Profile() {
           age: formValues.age,
           gender: formValues.gender,
           address: formValues.address,
-          profile_pic: imageUrl
+          profile_pic: imageUrl,
+          _id:user._id
         })).unwrap()
 
         setPreviewImage(imageUrl)
@@ -143,6 +144,7 @@ export default function Profile() {
               age: values.age,
               gender: values.gender,
               address: values.address,
+              _id:user._id
             })).unwrap()
             console.log('Update Profile Response:', Response);
             setSnackbarMessage('Profile updated successfully')

@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import DocHeader from "../components/Doctor/Doc-header";
 import DocFooter from "../components/Doctor/Doc-footer";
+import Loading from "../components/Loading/Loading";
 
+const DoctorLayout: React.FC = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
 
-const DoctorLayout:React.FC = ()=>{
+    // Clean up the timer
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
    return (
     <>
@@ -15,9 +29,8 @@ const DoctorLayout:React.FC = ()=>{
 </>
    )
 
-
-
 }
+
 
 export default DoctorLayout
 

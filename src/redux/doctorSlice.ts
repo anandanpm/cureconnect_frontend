@@ -1,14 +1,27 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { sendDoctorSignupData, sendDoctorLoginData, sendDoctorLogoutData, sendDoctorOtpData, resendDoctorOtpData,sendDoctorGoogleAuthData } from '../api/doctorApi';
+import { sendDoctorSignupData, sendDoctorLoginData, sendDoctorLogoutData, sendDoctorOtpData, resendDoctorOtpData,sendDoctorGoogleAuthData,updateDoctorProfileData } from '../api/doctorApi';
 
 interface DoctorState {
   username: string;
   email: string;
   isActive: boolean;
   verified: boolean;
-  role:string;
+  role: string;
+  age: string;
+  phone:string;
+  gender:string;
+  address:string;
+  profile_pic:string;
   loading: boolean;
   error: string | null;
+  clinic_name: string;
+  about: string;
+  education: string;
+  experience: string;
+  medical_license: string;
+  department: string;
+  certification?: string;
+  _id:string;
 }
 
 const initialState: DoctorState = {
@@ -16,10 +29,24 @@ const initialState: DoctorState = {
   email: '',
   isActive: false,
   verified: false,
-  role:'',
+  role: '',
+  age: '',
+  profile_pic: '',
+  phone: '',
   loading: false,
   error: null,
+  clinic_name: '',
+  about: '',
+  education: '',
+  experience: '',
+  medical_license: '',
+  department: '',
+  certification: '',
+  gender: '',
+  address: '',
+  _id:''
 };
+
 
 export const signupDoctor = createAsyncThunk(
   'doctor/signup',
@@ -62,7 +89,9 @@ export const loginDoctor = createAsyncThunk(
   async (doctorData: { email: string; password: string }, { rejectWithValue }) => {
     try {
       const response = await sendDoctorLoginData(doctorData);
+      console.log(response,'the response from the backend is comming')
       return response;
+
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Doctor login failed');
     }
@@ -80,6 +109,20 @@ export const logoutDoctor = createAsyncThunk(
     }
   }
 );
+
+export const updateDoctorProfile = createAsyncThunk(
+  'doctor/updateProfile',
+  async (profileData: Partial<Omit<DoctorState, '_id'>> & { _id: string }, { rejectWithValue }) => {
+    try {
+      const response = await updateDoctorProfileData(profileData);
+      console.log(response,'the response from the backend is comming');
+      return response.updatedDoc;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message || 'Failed to update doctor profile');
+    }
+  }
+);
+
 
 export const googleAuthDoctor = createAsyncThunk(
   'doctor/googleAuth',
@@ -162,13 +205,27 @@ const doctorSlice = createSlice({
         state.email = action.payload.email;
         state.isActive = action.payload.isActive;
         state.verified = action.payload.verified;
+        state.profile_pic = action.payload.profile_pic;
         state.role = action.payload.role;
+        state.certification = action.payload.certification;
+        state.experience = action.payload.experience;
+        state.education = action.payload.education;
+        state.clinic_name = action.payload.clinic_name;
+        state.about = action.payload.about;
+        state.medical_license = action.payload.medical_license;
+        state.department = action.payload.department;
+        state.age = action.payload.age;
+        state.gender = action.payload.gender;
+        state.address = action.payload.address;
+        state.phone = action.payload.phone;
+        state._id = action.payload._id;
         state.error = null;
       })
       .addCase(loginDoctor.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
+      
       .addCase(logoutDoctor.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -178,8 +235,20 @@ const doctorSlice = createSlice({
         state.username = '';
         state.email = '';
         state.role = '';
+        state.profile_pic = '';
+        state.about='';
+        state.address='';
+        state.age='';
+        state.certification='';
+        state.department='';
+        state.education='';
+        state.experience='';
+        state.medical_license='';
+        state.phone='';
+        state.clinic_name='';
         state.isActive = false;
         state.verified = false;
+        state._id = '';
       })
       .addCase(logoutDoctor.rejected, (state, action) => {
         state.loading = false;
@@ -195,12 +264,51 @@ const doctorSlice = createSlice({
         state.email = action.payload.email;
         state.isActive = action.payload.isActive;
         state.verified = action.payload.verified;
+        state.profile_pic = action.payload.profile_pic;
         state.role = action.payload.role;
+        state.about = action.payload.about;
+        state.address = action.payload.address;
+        state.age = action.payload.age;
+        state.certification = action.payload.certification;
+        state.department = action.payload.department;
+        state.education = action.payload.education;
+        state.experience = action.payload.experience;
+        state.medical_license = action.payload.medical_license;
+        state.phone = action.payload.phone;
+        state.clinic_name = action.payload.clinic_name;
         state.error = null;
       })
       .addCase(googleAuthDoctor.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(updateDoctorProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateDoctorProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload) {
+          state.username = action.payload.username || state.username;
+          state.email = action.payload.email || state.email;
+          state.phone = action.payload.phone || state.phone;
+          state.age = action.payload.age || state.age;
+          state.gender = action.payload.gender || state.gender;
+          state.address = action.payload.address || state.address;
+          state.profile_pic = action.payload.profile_pic || state.profile_pic;
+          state.clinic_name = action.payload.clinic_name || state.clinic_name;
+          state.about = action.payload.about || state.about;
+          state.education = action.payload.education || state.education;
+          state.experience = action.payload.experience || state.experience;
+          state.medical_license = action.payload.medical_license || state.medical_license;
+          state.department = action.payload.department || state.department;
+          state.certification = action.payload.certification || state.certification;
+        }
+        state.error = null;
+      })
+      .addCase(updateDoctorProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string || 'An unexpected error occurred';
       });
   },
 });

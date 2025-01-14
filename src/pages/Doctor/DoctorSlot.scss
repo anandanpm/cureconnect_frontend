@@ -1,0 +1,60 @@
+// DoctorSlot.scss
+.appointment-page {
+    padding: 24px;
+    
+    .appointment-card {
+      margin-bottom: 24px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+      .card-header {
+        background-color: #f8f9fa;
+        padding: 16px;
+      }
+  
+      .card-content {
+        padding: 24px;
+      }
+    }
+  
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+  
+      .date-picker,
+      .time-picker {
+        width: 100%;
+      }
+  
+      .add-slot-button {
+        margin-top: 8px;
+      }
+    }
+  
+    .slots-list-card {
+      .slots-list {
+        padding: 0;
+      }
+  
+      .slot-item {
+        border-bottom: 1px solid #eee;
+        padding: 12px;
+  
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+  
+      .slot-text {
+        margin-right: 16px;
+      }
+  
+      .delete-button {
+        color: #dc3545;
+        
+        &:hover {
+          color: darken(#dc3545, 10%);
+        }
+      }
+    }
+  }

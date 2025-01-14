@@ -72,9 +72,19 @@ export const updateUserProfile = async (userData: {
   gender: string;
   address: string;
   profile_pic?: string;
+  _id: string;
 }) => {
   try {
     const response = await api.put(`${API_URL}/update-profile`, userData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchVerifiedDoctors = async () => {
+  try {
+    const response = await api.get(`${API_URL}/verified-doctors`);
     return response.data;
   } catch (error) {
     throw error;
