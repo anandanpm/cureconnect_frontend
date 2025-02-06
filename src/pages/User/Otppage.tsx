@@ -78,6 +78,7 @@ export default function OTPVerification() {
     const handleResend = async () => {
         if (!isActive) {
             try {
+                console.log(email,'this is from the front end')
                 await resendOtpData(email)
                 setTimer(60);
                 setIsActive(true);

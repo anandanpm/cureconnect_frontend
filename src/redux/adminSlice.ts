@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { sendAdminLoginData, sendAdminLogoutData, fetchDoctorData, toggleDoctorStatusApi, verifyDoctorApi,fetchPatientData,togglePatientStatusApi } from '../api/adminApi';
+import { sendAdminLoginData, sendAdminLogoutData, fetchVerifyDoctorData, toggleDoctorStatusApi, verifyDoctorApi,fetchPatientData,togglePatientStatusApi,fetchDoctorData, rejectDoctorApi } from '../api/adminApi';
 interface AdminState {
   username: string;
   email: string;
@@ -45,17 +45,28 @@ export const logoutAdmin = createAsyncThunk(
   }
 );
 
-export const fetchDoctors = createAsyncThunk(
-  'admin/fetchDoctors',
+export const fetchVerifyDoctors = createAsyncThunk(
+  'admin/VerifyfetchDoctors',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchDoctorData();
+      const response = await fetchVerifyDoctorData();
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch doctor data');
     }
   }
 );
+export const fetchDoctors = createAsyncThunk(
+  'admin/fetchDoctors',
+  async(_,{rejectWithValue})=>{
+    try {
+      const response = await fetchDoctorData();
+      return response
+    } catch (error:any) {
+      return rejectWithValue(error.response?.data?.message||error.message||'Failed to fetch doctor data');
+    }
+  }
+)
 
 export const toggleDoctorStatus = createAsyncThunk(
   'admin/toggleDoctorStatus',
@@ -82,6 +93,20 @@ export const verifyDoctor = createAsyncThunk(
     }
   }
 );
+
+export const rejectDoctor = createAsyncThunk(
+  "admin/rejectDoctor",
+  async ({ doctorId, reason }: { doctorId: string; reason: string }, { rejectWithValue }) => {
+    try {
+      const response = await rejectDoctorApi(doctorId, reason)
+      return response
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message || "Failed to reject doctor")
+    }
+  },
+)
+
+
 
 export const fetchPatients = createAsyncThunk(
   'admin/fetchPatients',
@@ -150,16 +175,16 @@ const adminSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(fetchDoctors.pending, (state) => {
+      .addCase(fetchVerifyDoctors.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchDoctors.fulfilled, (state, action) => {
+      .addCase(fetchVerifyDoctors.fulfilled, (state, action) => {
         state.loading = false;
         state.doctors = action.payload;
         state.error = null;
       })
-      .addCase(fetchDoctors.rejected, (state, action) => {
+      .addCase(fetchVerifyDoctors.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })

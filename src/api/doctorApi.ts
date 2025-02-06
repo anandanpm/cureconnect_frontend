@@ -1,16 +1,10 @@
-import axios from 'axios'
-
-const API_URL = import.meta.env.VITE_DOCTOR_API_URL
-
-const api = axios.create({
-  baseURL: API_URL,
-  withCredentials: true,
-});
+import { AppointmentDetail } from "../pages/Doctor/DoctorPatient";
+import { doctorApi } from "./axiosInstance";
 
 export const sendDoctorSignupData = async (docData: { username: string; email: string, password: string }) => {
   try {
-    const response = await api.post(`${API_URL}/getOtp`, docData)
-    console.log(response.data, 'console.log from the axios api page')
+    const response = await doctorApi.post(`/getOtp`, docData)
+    console.log(response.data, 'console.log from the axios doctorApi page')
     return response
   } catch (error) {
     throw error
@@ -19,7 +13,7 @@ export const sendDoctorSignupData = async (docData: { username: string; email: s
 
 export const sendDoctorOtpData = async (docData: { email: string, otp: string }) => {
   try {
-    const response = await api.post(`${API_URL}/verifyOtp`, docData)
+    const response = await doctorApi.post(`/verifyOtp`, docData)
     console.log(response, 'this is from the doctor otp page')
     return response
   } catch (error) {
@@ -29,7 +23,7 @@ export const sendDoctorOtpData = async (docData: { email: string, otp: string })
 
 export const resendDoctorOtpData = async (email: string) => {
   try {
-    const response = await api.post(`${API_URL}/resendOtp`, { email })
+    const response = await doctorApi.post(`/resendOtp`, { email })
     console.log(response, 'the resend otp for doctor is coming')
     return response
   } catch (error) {
@@ -39,7 +33,7 @@ export const resendDoctorOtpData = async (email: string) => {
 
 export const sendDoctorLoginData = async (docData: { email: string, password: string }) => {
   try {
-    const response = await api.post(`${API_URL}/login`, docData)
+    const response = await doctorApi.post(`/login`, docData)
     console.log(response, 'the response from the doctor backend is coming')
     return response.data
   } catch (error) {
@@ -49,7 +43,7 @@ export const sendDoctorLoginData = async (docData: { email: string, password: st
 
 export const sendDoctorLogoutData = async () => {
   try {
-    const response = await api.post(`${API_URL}/logout`)
+    const response = await doctorApi.post(`/logout`)
     console.log(response, 'the response from the doctor logout is coming')
     return response
   } catch (error) {
@@ -59,7 +53,7 @@ export const sendDoctorLogoutData = async () => {
 
 export const sendDoctorGoogleAuthData = async (token: string) => {
   try {
-    const response = await api.post(`${API_URL}/google-auth`, { token })
+    const response = await doctorApi.post(`/google-auth`, { token })
     console.log(response, 'the response from the doctor Google auth is coming')
     return response
   } catch (error) {
@@ -85,11 +79,26 @@ export const updateDoctorProfileData = async (profileData: {
   _id:string;
 }) => {
   try {
-    const response = await api.put(`${API_URL}/profile`, profileData)
+    const response = await doctorApi.put(`/profile`, profileData)
     console.log(response, 'the response from updating doctor profile is coming')
     return response.data
   } catch (error) {
     throw error
   }
 }
+
+
+
+
+export const fetchDoctorAppointments = async (doctorId: string) => {
+  try {
+    const response = await doctorApi.get<AppointmentDetail[]>(`/appointments/${doctorId}`)
+    console.log(response, 'the response from doctor appointments fetch is coming')
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+
 

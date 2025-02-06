@@ -19,7 +19,11 @@ import ProtectedRoute from "./Protectedroute";
 import AdminPatient from '../pages/Admin/AdminPatient';
 import AdminDoctor from '../pages/Admin/AdminDoctor'
 import DoctorPage from "../pages/User/DoctorPage";
-// import DoctorSlot from "../pages/Doctor/DoctorSlot";
+import DoctorSlot from "../pages/Doctor/DoctorSlot";
+import AdminVerifyDoctor from '../pages/Admin/AdminVerifyDoctor';
+import AppointmentPage from '../pages/User/AppointmentPage';
+import AppointmentDetail from '../pages/User/BookAppointment';
+import DoctorAppointment from '../pages/Doctor/Doctorpatient';
 
 export const routes: RouteObject[] = [
   // Standalone OTP routes (no layout)
@@ -61,6 +65,17 @@ export const routes: RouteObject[] = [
       { index: true, element: <AdminDoctor /> } 
     ] 
   },
+  { 
+    path: "/admin/verify-doctor", 
+    element: ( 
+      <ProtectedRoute adminOnly> 
+        <AdminLayout /> 
+      </ProtectedRoute> 
+    ), 
+    children: [ 
+      { index: true, element: <AdminVerifyDoctor/> } 
+    ] 
+  },
 
   // User Routes with layout
   {
@@ -77,6 +92,22 @@ export const routes: RouteObject[] = [
         element: (
           <ProtectedRoute userOnly>
             <Profile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "appointment/:id",
+        element: (
+          <ProtectedRoute userOnly>
+            <AppointmentPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "appointment",
+        element: (
+          <ProtectedRoute userOnly>
+            <AppointmentDetail/>
           </ProtectedRoute>
         ),
       },
@@ -99,14 +130,22 @@ export const routes: RouteObject[] = [
           </ProtectedRoute>
         ),
       },
-      // {
-      //   path: "appointment",
-      //   element: (
-      //     <ProtectedRoute doctorOnly>
-      //       <DoctorSlot/>
-      //     </ProtectedRoute>
-      //   ),
-      // },
+      {
+        path: "appointment",
+        element: (
+          <ProtectedRoute doctorOnly>
+            <DoctorSlot/>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "patient",
+        element: (
+          <ProtectedRoute doctorOnly>
+            <DoctorAppointment/>
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ];

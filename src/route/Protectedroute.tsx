@@ -15,18 +15,18 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   doctorOnly,
   children,
 }) => {
-  // Get user details from the store
+
   const admin = useSelector((state: any) => state.admin);
   const user = useSelector((state: any) => state.user);
   const doctor = useSelector((state: any) => state.doctor);
 
   if (!admin && !user &&!doctor) {
-    // Redirect to login if the user is not authenticated
+
     return <Navigate to="/" replace />;
   }
 
   if (adminOnly && admin.role !== "admin") {
-    // Redirect to an error page or unauthorized page if the user is not an admin
+
     return <Navigate to="/unauthorized" replace />;
   }
 

@@ -126,7 +126,7 @@ const Header: React.FC = () => {
                   <User size={18} />
                   Profile
                 </MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick('/appointments')}>
+                <MenuItem onClick={() => handleMenuItemClick('/appointment')}>
                   <Calendar size={18} />
                   Appointments
                 </MenuItem>

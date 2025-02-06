@@ -1,54 +1,8 @@
-// import axios from 'axios'
-
-
-
-// const API_URL =import.meta.env.VITE_ADMIN_API_URL
-
-// const api = axios.create({
-//   baseURL: API_URL,
-//   withCredentials: true,
-// });
-
-// export const sendAdminLoginData = async (adminData: { email: string; password: string }) => {
-//   try {
-//     const response = await api.post(`${API_URL}/login`, adminData);
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-// export const sendAdminLogoutData = async () => {
-//   try {
-//     const response = await api.post(`${API_URL}/logout`);
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-// export const fetchPatientData = async () => {
-//   try {
-//     const response = await api.get(`${API_URL}/patients`);
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-
-import axios from 'axios'
-
-const API_URL = import.meta.env.VITE_ADMIN_API_URL
-
-const api = axios.create({
-  baseURL: API_URL,
-  withCredentials: true,
-});
+import { adminApi } from "./axiosInstance";
 
 export const sendAdminLoginData = async (adminData: { email: string; password: string }) => {
   try {
-    const response = await api.post(`${API_URL}/login`, adminData);
+    const response = await adminApi.post(`/login`, adminData);
     return response.data;
   } catch (error) {
     throw error;
@@ -57,7 +11,7 @@ export const sendAdminLoginData = async (adminData: { email: string; password: s
 
 export const sendAdminLogoutData = async () => {
   try {
-    const response = await api.post(`${API_URL}/logout`);
+    const response = await adminApi.post(`/logout`);
     return response.data;
   } catch (error) {
     throw error;
@@ -66,7 +20,7 @@ export const sendAdminLogoutData = async () => {
 
 export const fetchPatientData = async () => {
   try {
-    const response = await api.get(`${API_URL}/patients`);
+    const response = await adminApi.get(`/patients`);
     return response.data;
   } catch (error) {
     throw error;
@@ -75,16 +29,26 @@ export const fetchPatientData = async () => {
 
 export const togglePatientStatusApi = async (patientId: string, newStatus: boolean) => {
   try {
-    const response = await api.patch(`${API_URL}/patients/${patientId}/toggle-status`, { is_active: newStatus });
+    const response = await adminApi.patch(`/patients/${patientId}/toggle-status`, { is_active: newStatus });
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
+
 export const fetchDoctorData = async () => {
   try {
-    const response = await api.get(`${API_URL}/doctors`);
+    const response = await adminApi.get(`/doctors`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchVerifyDoctorData = async () => {
+  try {
+    const response = await adminApi.get(`/verifydoctors`);
     console.log(response.data,'the details of the doctor is comming')
     return response.data;
 
@@ -95,7 +59,7 @@ export const fetchDoctorData = async () => {
 
 export const toggleDoctorStatusApi = async (doctorId: string) => {
   try {
-    const response = await api.patch(`${API_URL}/doctors/${doctorId}/toggle-status`);
+    const response = await adminApi.patch(`/doctors/${doctorId}/toggle-status`);
     return response.data;
   } catch (error) {
     throw error;
@@ -104,9 +68,18 @@ export const toggleDoctorStatusApi = async (doctorId: string) => {
 
 export const verifyDoctorApi = async (doctorId: string) => {
   try {
-    const response = await api.patch(`${API_URL}/doctors/${doctorId}/verify`);
+    const response = await adminApi.patch(`/doctors/${doctorId}/verify`);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
+
+export const rejectDoctorApi = async (doctorId: string, reason: string) => {
+  try {
+    const response = await adminApi.post(`/doctors/${doctorId}/reject`, { reason })
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
