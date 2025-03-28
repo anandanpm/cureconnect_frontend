@@ -1,4 +1,19 @@
 import { adminApi } from "./axiosInstance";
+interface DashboardMetrics {
+  totalDoctors: number;
+  totalUsers: number;
+  totalAppointments: number;
+  completedAppointments: number;
+  cancelledAppointments: number;
+  pendingAppointments: number;
+  revenueGenerated: number;
+}
+
+interface ChartData {
+  daily: { name: string; appointments: number }[];
+  weekly: { name: string; appointments: number }[];
+  yearly: { name: string; appointments: number }[];
+}
 
 export const sendAdminLoginData = async (adminData: { email: string; password: string }) => {
   try {
@@ -83,3 +98,23 @@ export const rejectDoctorApi = async (doctorId: string, reason: string) => {
     throw error
   }
 }
+
+export const fetchDashboardMetrics = async (): Promise<DashboardMetrics> => {
+  try {
+    const response = await adminApi.get(`/dashboard-metrics`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchAppointmentStats = async (timeRange: string): Promise<ChartData> => {
+  try {
+    const response = await adminApi.get(`/appointment-stats`, {
+      params: { timeRange },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

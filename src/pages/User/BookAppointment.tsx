@@ -1,16 +1,314 @@
 
+// import type React from "react"
+// import { useEffect, useState } from "react"
+// import { useSelector } from "react-redux"
+// import { fetchAppointmentDetails, requestRefund } from "../../api/userApi"
+// import type { RootState } from "../../redux/store"
+// import "./BookAppointment.scss"
+// import { Button, IconButton, Snackbar, Alert } from "@mui/material"
+// import { NavigateBefore, NavigateNext, Chat } from "@mui/icons-material"
+// import { useNavigate } from "react-router-dom" 
+
+// interface AppointmentDetails {
+//   doctorDepartment: string
+//   doctorName: string
+//   doctorId:string
+//   patientName: string
+//   startTime: string
+//   endTime: string
+//   appointmentDate: string
+//   status: string
+//   appointmentId: string
+//   payment_id?: string
+//   amount?: number
+// }
+
+// const convertTo12HourFormat = (time: string) => {
+//   if (!time) return ""
+//   const [hours, minutes] = time.split(":")
+//   const hourNum = Number.parseInt(hours)
+//   const period = hourNum >= 12 ? "PM" : "AM"
+//   const convertedHours = hourNum % 12 || 12
+//   return `${convertedHours}:${minutes} ${period}`
+// }
+
+// const AppointmentDetails: React.FC = () => {
+//   const navigate = useNavigate() // Added navigation hook
+//   const [appointmentDetails, setAppointmentDetails] = useState<AppointmentDetails[]>([])
+//   const [loading, setLoading] = useState<boolean>(true)
+//   const [error, setError] = useState<string | null>(null)
+//   const [currentPage, setCurrentPage] = useState<number>(1)
+//   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+//   const [selectedAppointment, setSelectedAppointment] = useState<AppointmentDetails | null>(null)
+//   const [processingRefund, setProcessingRefund] = useState<boolean>(false)
+//   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+//   const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
+
+//   const PAGE_SIZE = 3
+//   const MAX_VISIBLE_PAGES = 3
+//   const userId = useSelector((state: RootState) => state.user._id)
+
+//   useEffect(() => {
+//     if (userId) {
+//       loadAppointments()
+//     }
+//   }, [userId])
+
+//   const loadAppointments = async () => {
+//     try {
+//       const details = await fetchAppointmentDetails(userId)
+//       setAppointmentDetails(details || [])
+//       setError(null)
+//     } catch (err: any) {
+//       if (err.message === "No pending appointments found") {
+//         setAppointmentDetails([])
+//         setError(null)
+//       } else {
+//         setError("Failed to fetch appointment details")
+//         setAppointmentDetails([])
+//       }
+//     } finally {
+//       setLoading(false)
+//     }
+//   }
+
+//   // Fixed chat handling function
+//   const handleChat = (appointmentId: string) => {
+//     navigate(`/chat/${appointmentId}`)
+//   }
+
+//   const handleCancelAppointment = (appointment: AppointmentDetails) => {
+//     setSelectedAppointment(appointment)
+//     setIsModalOpen(true)
+//   }
+
+//   const handleConfirmCancel = async () => {
+//     if (!selectedAppointment || !userId) return
+
+//     setProcessingRefund(true)
+//     try {
+//       await requestRefund(selectedAppointment.appointmentId)
+
+//       setAppointmentDetails((prevDetails) =>
+//         prevDetails.map((appointment) =>
+//           appointment.appointmentId === selectedAppointment.appointmentId
+//             ? { ...appointment, status: "Cancelled" }
+//             : appointment,
+//         ),
+//       )
+
+//       await loadAppointments()
+//       setIsModalOpen(false)
+//       setSelectedAppointment(null)
+//       setSuccessMessage("Appointment cancelled successfully")
+//       setShowSuccessModal(true)
+//     } catch (err) {
+//       setError("Failed to process refund. Please try again later.")
+//     } finally {
+//       setProcessingRefund(false)
+//     }
+//   }
+
+//   const handleCloseSuccessMessage = () => {
+//     setSuccessMessage(null)
+//     setShowSuccessModal(false)
+//   }
+
+//   const totalPages = Math.ceil(appointmentDetails.length / PAGE_SIZE)
+//   const currentAppointments = appointmentDetails.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+
+//   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
+
+//   const renderPageNumbers = () => {
+//     const pageNumbers = []
+//     const startPage = Math.max(1, currentPage - Math.floor(MAX_VISIBLE_PAGES / 2))
+//     const endPage = Math.min(totalPages, startPage + MAX_VISIBLE_PAGES - 1)
+
+//     for (let i = startPage; i <= endPage; i++) {
+//       pageNumbers.push(
+//         <Button key={i} onClick={() => paginate(i)} variant={currentPage === i ? "contained" : "outlined"} size="small">
+//           {i}
+//         </Button>,
+//       )
+//     }
+//     return pageNumbers
+//   }
+
+//   const renderContent = () => {
+//     if (loading) {
+//       return (
+//         <div className="no-appointments">
+//           <p>Loading appointments...</p>
+//         </div>
+//       )
+//     }
+
+//     if (error) {
+//       return (
+//         <div className="no-appointments">
+//           <p>{error}</p>
+//         </div>
+//       )
+//     }
+
+//     if (!appointmentDetails || appointmentDetails.length === 0) {
+//       return (
+//         <div className="no-appointments">
+//           <p>You have no appointments scheduled at the moment.</p>
+//         </div>
+//       )
+//     }
+
+//     return (
+//       <>
+//         <div className="appointments-container">
+//           {currentAppointments.map((appointment) => (
+//             <div key={appointment.appointmentId} className={`appointment-card ${appointment.status.toLowerCase()}`}>
+//               <div className="details-container">
+//                 <div className="doctor-info">
+//                   <h2>Doctor Information</h2>
+//                   <p>
+//                     <strong>Name:</strong> {appointment.doctorName}
+//                   </p>
+//                   <p>
+//                     <strong>Department:</strong> {appointment.doctorDepartment}
+//                   </p>
+//                 </div>
+
+//                 <div className="appointment-info">
+//                   <h2>Appointment Details</h2>
+//                   <p>
+//                     <strong>Date:</strong> {appointment.appointmentDate}
+//                   </p>
+//                   <p>
+//                     <strong>Time:</strong> {convertTo12HourFormat(appointment.startTime)} -{" "}
+//                     {convertTo12HourFormat(appointment.endTime)}
+//                   </p>
+//                   <p>
+//                     <strong>Status:</strong>{" "}
+//                     <span className={`status ${appointment.status.toLowerCase()}`}>{appointment.status}</span>
+//                   </p>
+//                 </div>
+//               </div>
+
+//               <div className="action-buttons">
+//                 {appointment.status !== "Cancelled" && (
+//                   <>
+//                     {/* Fixed Chat Button */}
+//                     <Button
+//                       variant="contained"
+//                       startIcon={<Chat />}
+//                       onClick={() => handleChat(appointment.doctorId)}
+//                       className="action-button chat"
+//                     >
+//                       Chat
+//                     </Button>
+//                     <Button
+//                       variant="contained"
+//                       onClick={() => handleCancelAppointment(appointment)}
+//                       disabled={processingRefund}
+//                       className="action-button cancel"
+//                     >
+//                       Cancel Appointment
+//                     </Button>
+//                   </>
+//                 )}
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+
+//         {appointmentDetails.length > PAGE_SIZE && (
+//           <div className="pagination">
+//             <IconButton onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+//               <NavigateBefore />
+//             </IconButton>
+//             {renderPageNumbers()}
+//             <IconButton onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages}>
+//               <NavigateNext />
+//             </IconButton>
+//           </div>
+//         )}
+//       </>
+//     )
+//   }
+
+//   return (
+//     <div className="appointment-details">
+//       <h1>Your Appointments</h1>
+//       {renderContent()}
+
+//       {isModalOpen && selectedAppointment && (
+//         <div className="modal-overlay">
+//           <div className="modal-content">
+//             <h2>Cancel Appointment</h2>
+//             <div className="modal-body">
+//               <p>Are you sure you want to cancel this appointment?</p>
+//               <div className="refund-details">
+//                 <p>
+//                   <strong>Doctor:</strong> {selectedAppointment.doctorName}
+//                 </p>
+//                 <p>
+//                   <strong>Date:</strong> {selectedAppointment.appointmentDate}
+//                 </p>
+//                 <p className="note">Note: You will receive 50% of the original payment as refund.</p>
+//               </div>
+//             </div>
+//             <div className="modal-actions">
+//               <Button variant="contained" color="secondary" onClick={handleConfirmCancel} disabled={processingRefund}>
+//                 {processingRefund ? "Processing..." : "Yes, Cancel Appointment"}
+//               </Button>
+//               <Button variant="outlined" onClick={() => setIsModalOpen(false)} disabled={processingRefund}>
+//                 No, Keep Appointment
+//               </Button>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+
+//       {showSuccessModal && (
+//         <div className="modal-overlay">
+//           <div className="modal-content success-modal">
+//             <h2>Success!</h2>
+//             <div className="modal-body">
+//               <p>Your appointment has been successfully cancelled.</p>
+//               <p>A refund of 50% will be processed to your original payment method.</p>
+//             </div>
+//             <div className="modal-actions">
+//               <Button variant="contained" color="primary" onClick={handleCloseSuccessMessage}>
+//                 Close
+//               </Button>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+
+//       <Snackbar open={!!successMessage} autoHideDuration={6000} onClose={handleCloseSuccessMessage}>
+//         <Alert onClose={handleCloseSuccessMessage} severity="success" sx={{ width: "100%" }}>
+//           {successMessage}
+//         </Alert>
+//       </Snackbar>
+//     </div>
+//   )
+// }
+
+// export default AppointmentDetails
+
 import type React from "react"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { fetchAppointmentDetails, requestRefund } from "../../api/userApi"
 import type { RootState } from "../../redux/store"
 import "./BookAppointment.scss"
-import { Button, IconButton } from "@mui/material"
-import { NavigateBefore, NavigateNext, Chat, VideoCall } from "@mui/icons-material"
+import { Button, Snackbar, Alert } from "@mui/material"
+import { Chat } from "@mui/icons-material"
+import { useNavigate } from "react-router-dom" 
+import Pagination from "../../components/Pagination/Pagination" // Import your custom Pagination component
 
 interface AppointmentDetails {
   doctorDepartment: string
   doctorName: string
+  doctorId: string
   patientName: string
   startTime: string
   endTime: string
@@ -19,6 +317,13 @@ interface AppointmentDetails {
   appointmentId: string
   payment_id?: string
   amount?: number
+}
+
+interface PaginatedResponse {
+  appointments: AppointmentDetails[]
+  totalCount: number
+  totalPages: number
+  currentPage: number
 }
 
 const convertTo12HourFormat = (time: string) => {
@@ -31,6 +336,7 @@ const convertTo12HourFormat = (time: string) => {
 }
 
 const AppointmentDetails: React.FC = () => {
+  const navigate = useNavigate()
   const [appointmentDetails, setAppointmentDetails] = useState<AppointmentDetails[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
@@ -38,35 +344,42 @@ const AppointmentDetails: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [selectedAppointment, setSelectedAppointment] = useState<AppointmentDetails | null>(null)
   const [processingRefund, setProcessingRefund] = useState<boolean>(false)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
+  const [totalPages, setTotalPages] = useState<number>(1)
 
-  const PAGE_SIZE = 1
-  const MAX_VISIBLE_PAGES = 3
+  const PAGE_SIZE = 3
   const userId = useSelector((state: RootState) => state.user._id)
 
   useEffect(() => {
     if (userId) {
-      loadAppointments()
+      loadAppointments(currentPage)
     }
-  }, [userId])
+  }, [userId, currentPage])
 
-  const loadAppointments = async () => {
+  const loadAppointments = async (page: number) => {
+    setLoading(true)
     try {
-      const details = await fetchAppointmentDetails(userId)
-      setAppointmentDetails(details)
-    } catch (err) {
-      setError("Failed to fetch appointment details")
+      const response = await fetchAppointmentDetails(userId, page, PAGE_SIZE) as PaginatedResponse
+      setAppointmentDetails(response.appointments || [])
+      setTotalPages(response.totalPages || 1)
+      setError(null)
+    } catch (err: any) {
+      if (err.message === "No pending appointments found") {
+        setAppointmentDetails([])
+        setTotalPages(1)
+        setError(null)
+      } else {
+        setError("Failed to fetch appointment details")
+        setAppointmentDetails([])
+      }
     } finally {
       setLoading(false)
     }
   }
 
-  const handleVideoCall = (appointmentId: string) => {
-    console.log("Starting video call for appointment:", appointmentId)
-  }
-
-  const handleChat = (userId: string) => {
-    console.log("Opening chat for appointment:", userId)
-    // Implement chat functionality here
+  const handleChat = (appointmentId: string) => {
+    navigate(`/chat/${appointmentId}`)
   }
 
   const handleCancelAppointment = (appointment: AppointmentDetails) => {
@@ -80,18 +393,12 @@ const AppointmentDetails: React.FC = () => {
     setProcessingRefund(true)
     try {
       await requestRefund(selectedAppointment.appointmentId)
-      
-      setAppointmentDetails(prevDetails =>
-        prevDetails.map(appointment =>
-          appointment.appointmentId === selectedAppointment.appointmentId
-            ? { ...appointment, status: 'Cancelled' }
-            : appointment
-        )
-      )
 
-      await loadAppointments()
+      await loadAppointments(currentPage)
       setIsModalOpen(false)
       setSelectedAppointment(null)
+      setSuccessMessage("Appointment cancelled successfully")
+      setShowSuccessModal(true)
     } catch (err) {
       setError("Failed to process refund. Please try again later.")
     } finally {
@@ -99,114 +406,122 @@ const AppointmentDetails: React.FC = () => {
     }
   }
 
-  const totalPages = Math.ceil(appointmentDetails.length / PAGE_SIZE)
-  const currentAppointments = appointmentDetails.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
-
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
-
-  const renderPageNumbers = () => {
-    const pageNumbers = []
-    const startPage = Math.max(1, currentPage - Math.floor(MAX_VISIBLE_PAGES / 2))
-    const endPage = Math.min(totalPages, startPage + MAX_VISIBLE_PAGES - 1)
-
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(
-        <Button key={i} onClick={() => paginate(i)} variant={currentPage === i ? "contained" : "outlined"} size="small">
-          {i}
-        </Button>,
-      )
-    }
-    return pageNumbers
+  const handleCloseSuccessMessage = () => {
+    setSuccessMessage(null)
+    setShowSuccessModal(false)
   }
 
-  if (loading) return <div className="loading">Loading appointments...</div>
-  if (error) return <div className="error">{error}</div>
-  if (appointmentDetails.length === 0) {
-    return <div className="no-appointments">No appointments found</div>
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  const renderContent = () => {
+    if (loading && appointmentDetails.length === 0) {
+      return (
+        <div className="no-appointments">
+          <p>Loading appointments...</p>
+        </div>
+      )
+    }
+
+    if (error) {
+      return (
+        <div className="no-appointments">
+          <p>{error}</p>
+        </div>
+      )
+    }
+
+    if (!appointmentDetails || appointmentDetails.length === 0) {
+      return (
+        <div className="no-appointments">
+          <p>You have no appointments scheduled at the moment.</p>
+        </div>
+      )
+    }
+
+    return (
+      <>
+        <div className="appointments-container">
+          {appointmentDetails.map((appointment) => (
+            <div key={appointment.appointmentId} className={`appointment-card ${appointment.status.toLowerCase()}`}>
+              <div className="details-container">
+                <div className="doctor-info">
+                  <h2>Doctor Information</h2>
+                  <p>
+                    <strong>Name:</strong> {appointment.doctorName}
+                  </p>
+                  <p>
+                    <strong>Department:</strong> {appointment.doctorDepartment}
+                  </p>
+                </div>
+
+                <div className="appointment-info">
+                  <h2>Appointment Details</h2>
+                  <p>
+                    <strong>Date:</strong> {appointment.appointmentDate}
+                  </p>
+                  <p>
+                    <strong>Time:</strong> {convertTo12HourFormat(appointment.startTime)} -{" "}
+                    {convertTo12HourFormat(appointment.endTime)}
+                  </p>
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    <span className={`status ${appointment.status.toLowerCase()}`}>{appointment.status}</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="action-buttons">
+                {appointment.status !== "Cancelled" && (
+                  <>
+                    <Button
+                      variant="contained"
+                      startIcon={<Chat />}
+                      onClick={() => handleChat(appointment.doctorId)}
+                      className="action-button chat"
+                    >
+                      Chat
+                    </Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => handleCancelAppointment(appointment)}
+                      disabled={processingRefund}
+                      className="action-button cancel"
+                    >
+                      Cancel Appointment
+                    </Button>
+                  </>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {totalPages > 1 && (
+          <div className="pagination-container">
+            <Pagination 
+              currentPage={currentPage} 
+              totalPages={totalPages} 
+              onPageChange={handlePageChange}
+              siblingCount={1}
+            />
+          </div>
+        )}
+
+        {loading && appointmentDetails.length > 0 && (
+          <div className="loading-overlay">
+            <p>Loading more appointments...</p>
+          </div>
+        )}
+      </>
+    )
   }
 
   return (
     <div className="appointment-details">
       <h1>Your Appointments</h1>
-
-      <div className="appointments-container">
-        {currentAppointments.map((appointment) => (
-          <div key={appointment.appointmentId} className={`appointment-card ${appointment.status.toLowerCase()}`}>
-            <div className="details-container">
-              <div className="doctor-info">
-                <h2>Doctor Information</h2>
-                <p>
-                  <strong>Name:</strong> {appointment.doctorName}
-                </p>
-                <p>
-                  <strong>Department:</strong> {appointment.doctorDepartment}
-                </p>
-              </div>
-
-              <div className="appointment-info">
-                <h2>Appointment Details</h2>
-                <p>
-                  <strong>Date:</strong> {appointment.appointmentDate}
-                </p>
-                <p>
-                  <strong>Time:</strong> {convertTo12HourFormat(appointment.startTime)} -{" "}
-                  {convertTo12HourFormat(appointment.endTime)}
-                </p>
-                <p>
-                  <strong>Status:</strong>{" "}
-                  <span className={`status ${appointment.status.toLowerCase()}`}>{appointment.status}</span>
-                </p>
-              </div>
-            </div>
-
-            <div className="action-buttons">
-              {appointment.status !== "Cancelled" && (
-                <>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<VideoCall />}
-                    onClick={() => handleVideoCall(appointment.appointmentId)}
-                    className="action-button video-call"
-                  >
-                    Video Call
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="info"
-                    startIcon={<Chat />}
-                    onClick={() => handleChat(userId)}
-                    className="action-button chat"
-                  >
-                    Chat
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleCancelAppointment(appointment)}
-                    disabled={processingRefund}
-                    className="action-button cancel"
-                  >
-                    Cancel Appointment
-                  </Button>
-                </>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {appointmentDetails.length > PAGE_SIZE && (
-        <div className="pagination">
-          <IconButton onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
-            <NavigateBefore />
-          </IconButton>
-          {renderPageNumbers()}
-          <IconButton onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages}>
-            <NavigateNext />
-          </IconButton>
-        </div>
-      )}
+      {renderContent()}
 
       {isModalOpen && selectedAppointment && (
         <div className="modal-overlay">
@@ -235,6 +550,29 @@ const AppointmentDetails: React.FC = () => {
           </div>
         </div>
       )}
+
+      {showSuccessModal && (
+        <div className="modal-overlay">
+          <div className="modal-content success-modal">
+            <h2>Success!</h2>
+            <div className="modal-body">
+              <p>Your appointment has been successfully cancelled.</p>
+              <p>A refund of 50% will be processed to your original payment method.</p>
+            </div>
+            <div className="modal-actions">
+              <Button variant="contained" color="primary" onClick={handleCloseSuccessMessage}>
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Snackbar open={!!successMessage} autoHideDuration={6000} onClose={handleCloseSuccessMessage}>
+        <Alert onClose={handleCloseSuccessMessage} severity="success" sx={{ width: "100%" }}>
+          {successMessage}
+        </Alert>
+      </Snackbar>
     </div>
   )
 }

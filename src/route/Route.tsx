@@ -23,7 +23,15 @@ import DoctorSlot from "../pages/Doctor/DoctorSlot";
 import AdminVerifyDoctor from '../pages/Admin/AdminVerifyDoctor';
 import AppointmentPage from '../pages/User/AppointmentPage';
 import AppointmentDetail from '../pages/User/BookAppointment';
-import DoctorAppointment from '../pages/Doctor/Doctorpatient';
+import DoctorAppointment from '../pages/Doctor/DoctorPatient';
+import AppointmentSuccess from '../pages/User/AppointmentSuccess';
+import BookingHistory from '../pages/User/PreviousAppointment'
+import Chat from '../components/Chat/Chat ';
+import DocChat from "../pages/Doctor/DocChat";
+import Prescription from '../pages/Doctor/DocPrescription'
+import Vediocall from "../components/Video/Vediocall";
+import PrescriptionDetails from "../pages/User/Prescription";
+import Review from "../pages/User/Review"
 
 export const routes: RouteObject[] = [
   // Standalone OTP routes (no layout)
@@ -87,6 +95,9 @@ export const routes: RouteObject[] = [
       { path: "login", element: <LoginPage /> },
       { path: "about", element: <About /> },
       {path:'doctordetails',element:<DoctorPage/>},
+      {path:"/chat/:appointmentId",element:<Chat/>},
+      {path:"/video-call/:appointmentId",element:<Vediocall/>},
+
       {
         path: "profile",
         element: (
@@ -111,6 +122,38 @@ export const routes: RouteObject[] = [
           </ProtectedRoute>
         ),
       },
+      {
+        path: "appointment-success",
+        element: (
+          <ProtectedRoute userOnly>
+            <AppointmentSuccess/>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "historyappointment",
+        element: (
+          <ProtectedRoute userOnly>
+            <BookingHistory/>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "prescriptions/:appointmentid",
+        element: (
+          <ProtectedRoute userOnly>
+            <PrescriptionDetails/>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "review/:appointmentid",
+        element: (
+          <ProtectedRoute userOnly>
+            <Review/>
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 
@@ -122,6 +165,8 @@ export const routes: RouteObject[] = [
       { index: true, element: <DocMainpage /> },
       { path: "signup", element: <Docsignup /> },
       { path: "login", element: <Doclogin /> },
+      {path:'chat/:appointmentId',element:<DocChat/>},
+      {path:'video-call/:appointmentId',element:<Vediocall/>},
       {
         path: "profile",
         element: (
@@ -143,6 +188,14 @@ export const routes: RouteObject[] = [
         element: (
           <ProtectedRoute doctorOnly>
             <DoctorAppointment/>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "prescription/:appointmentId",
+        element: (
+          <ProtectedRoute doctorOnly>
+            <Prescription/>
           </ProtectedRoute>
         ),
       },

@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-// import Cookies from 'js-cookie';
+
 
 
 const userApi = axios.create({

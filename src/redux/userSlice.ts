@@ -15,6 +15,10 @@ interface UserState {
   _id:string;
   doctor: any[];
   error: string | null;
+  totalDoctors: number;
+  totalPages: number;
+  currentPage: number;
+  departments: string[];
   
 }
 
@@ -29,6 +33,11 @@ const initialState: UserState = {
   address:'',
   _id:'',
   doctor: [],
+  totalDoctors: 0,
+  totalPages: 0,
+  currentPage: 1,
+  departments: [],
+
   isActive:false,
   loading: false,
   error: null,
@@ -112,11 +121,28 @@ export const updateProfile = createAsyncThunk(
   }
 );
 
+// export const getVerifiedDoctors = createAsyncThunk(
+//   'user/getVerifiedDoctors',
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const response = await fetchVerifiedDoctors();
+//       return response;
+//     } catch (error: any) {
+//       return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch verified doctors');
+//     }
+//   }
+// );
+
 export const getVerifiedDoctors = createAsyncThunk(
   'user/getVerifiedDoctors',
-  async (_, { rejectWithValue }) => {
+  async (params: { 
+    page?: number; 
+    limit?: number; 
+    search?: string; 
+    department?: string;
+  } = {}, { rejectWithValue }) => {
     try {
-      const response = await fetchVerifiedDoctors();
+      const response = await fetchVerifiedDoctors(params);
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch verified doctors');
@@ -244,20 +270,36 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string || 'An unexpected error occurred';
       })
+      // .addCase(getVerifiedDoctors.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(getVerifiedDoctors.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   state.doctor = action.payload;
+      //   state.error = null;
+      // })
+      // .addCase(getVerifiedDoctors.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.payload as string || 'An unexpected error occurred';
+      // })
       .addCase(getVerifiedDoctors.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(getVerifiedDoctors.fulfilled, (state, action) => {
         state.loading = false;
-        state.doctor = action.payload;
-        state.error = null;
+        state.doctor = action.payload.doctors;
+        state.totalDoctors = action.payload.totalDoctors;
+        state.totalPages = action.payload.totalPages;
+        state.currentPage = action.payload.currentPage;
+        state.departments = action.payload.departments;
       })
       .addCase(getVerifiedDoctors.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string || 'An unexpected error occurred';
+        state.error = action.payload as string;
       });
-     },
+    },
 });
 
 export const { clearError, logout } = userSlice.actions;

@@ -38,6 +38,7 @@ export const logoutAdmin = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await sendAdminLogoutData();
+      console.log(response,'the response is comming')
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Admin logout failed');

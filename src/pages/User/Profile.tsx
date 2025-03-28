@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field } from 'formik'
@@ -11,12 +12,20 @@ import {
   CircularProgress,
   Paper,
   Snackbar,
-  MenuItem
+  MenuItem,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton
 } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
 import { RootState, AppDispatch } from '../../redux/store'
 import { updateProfile } from '../../redux/userSlice'
 import { uploadImageToCloudinary } from '../../services/Cloudinary'
+import {resetPassword} from '../../api/userApi'
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -66,6 +75,22 @@ const ProfileSchema = Yup.object().shape({
     .required('Required'),
 })
 
+// Password reset validation schema
+const PasswordResetSchema = Yup.object().shape({
+  oldPassword: Yup.string()
+    .required('Current password is required'),
+  newPassword: Yup.string()
+    .min(8, 'Password must be at least 8 characters')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+    )
+    .required('New password is required'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('newPassword')], 'Passwords must match')
+    .required('Confirm password is required')
+})
+
 export default function Profile() {
   const dispatch = useDispatch<AppDispatch>()
   const user = useSelector((state: RootState) => state.user)
@@ -73,6 +98,7 @@ export default function Profile() {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [previewImage, setPreviewImage] = useState<string | null>(null)
+  const [passwordResetOpen, setPasswordResetOpen] = useState(false)
   const [formValues, setFormValues] = useState({
     userName: user.username || '',
     email: user.email || '',
@@ -328,6 +354,7 @@ export default function Profile() {
                 <StyledButton
                   variant="outlined"
                   color="primary"
+                  onClick={() => setPasswordResetOpen(true)}
                 >
                   Reset Password
                 </StyledButton>
@@ -336,6 +363,143 @@ export default function Profile() {
           </Form>
         )}
       </Formik>
+
+      {/* Password Reset Modal */}
+      <Dialog 
+        open={passwordResetOpen} 
+        onClose={() => setPasswordResetOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          Reset Password
+          <IconButton 
+            edge="end" 
+            color="inherit" 
+            onClick={() => setPasswordResetOpen(false)} 
+            aria-label="close"
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <Formik
+          initialValues={{
+            oldPassword: '',
+            newPassword: '',
+            confirmPassword: ''
+          }}
+          validationSchema={PasswordResetSchema}
+          onSubmit={async (values, { setSubmitting, resetForm }) => {
+            try {
+              await resetPassword({
+                userId: user._id,
+                oldPassword: values.oldPassword,
+                newPassword: values.newPassword
+              });
+              
+              setSnackbarMessage('Password updated successfully');
+              setSnackbarOpen(true);
+              setPasswordResetOpen(false);
+              resetForm();
+            } catch (error: any) {
+              if (error.response?.status === 401) {
+                setSnackbarMessage('Current password is incorrect');
+              } else {
+                setSnackbarMessage('Failed to update password');
+              }
+              setSnackbarOpen(true);
+            } finally {
+              setSubmitting(false);
+            }
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+          }) => (
+            <Form onSubmit={handleSubmit}>
+              <DialogContent>
+                <DialogContentText sx={{ mb: 3 }}>
+                  To reset your password, please enter your current password and choose a new password.
+                </DialogContentText>
+                
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      margin="dense"
+                      name="oldPassword"
+                      label="Current Password"
+                      type="password"
+                      value={values.oldPassword}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={touched.oldPassword && Boolean(errors.oldPassword)}
+                      helperText={touched.oldPassword && errors.oldPassword}
+                    />
+                  </Grid>
+                  
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      margin="dense"
+                      name="newPassword"
+                      label="New Password"
+                      type="password"
+                      value={values.newPassword}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={touched.newPassword && Boolean(errors.newPassword)}
+                      helperText={touched.newPassword && errors.newPassword}
+                    />
+                  </Grid>
+                  
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      margin="dense"
+                      name="confirmPassword"
+                      label="Confirm New Password"
+                      type="password"
+                      value={values.confirmPassword}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={touched.confirmPassword && Boolean(errors.confirmPassword)}
+                      helperText={touched.confirmPassword && errors.confirmPassword}
+                    />
+                  </Grid>
+                </Grid>
+              </DialogContent>
+              <DialogActions sx={{ px: 3, pb: 3, pt: 1 }}>
+                <Button 
+                  onClick={() => setPasswordResetOpen(false)} 
+                  color="primary"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  disabled={isSubmitting}
+                  sx={{ 
+                    bgcolor: '#008080',
+                    '&:hover': { bgcolor: '#006666' }
+                  }}
+                >
+                  {isSubmitting ? <CircularProgress size={24} /> : 'Update Password'}
+                </Button>
+              </DialogActions>
+            </Form>
+          )}
+        </Formik>
+      </Dialog>
+
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
@@ -345,4 +509,3 @@ export default function Profile() {
     </StyledPaper>
   )
 }
-

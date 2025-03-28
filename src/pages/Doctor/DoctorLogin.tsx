@@ -8,6 +8,7 @@ import { loginDoctor, clearError, googleAuthDoctor } from '../../redux/doctorSli
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 import { Snackbar, Alert } from '@mui/material';
+import ForgotDocPasswordModal from '../../components/Doctor/DocforgottenPassword';
 import './DoctorLogin.scss';
 
 // Define the login schema
@@ -49,6 +50,7 @@ const DoctorLoginPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error, isActive } = useSelector((state: RootState) => state.doctor);
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   
   // Snackbar state
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -166,7 +168,15 @@ const DoctorLoginPage: React.FC = () => {
           <div className="remember-forgot">
             <div className="remember">
             </div>
-            <a href="#" className="forgot">Forgot password?</a>
+            <a
+              className="forgot"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsForgotPasswordOpen(true);
+              }}
+            >
+              Forgot password?
+            </a>
           </div>
 
           <button 
@@ -215,6 +225,10 @@ const DoctorLoginPage: React.FC = () => {
           {snackbarMessage}
         </Alert>
       </Snackbar>
+      <ForgotDocPasswordModal
+              isOpen={isForgotPasswordOpen}
+              onClose={() => setIsForgotPasswordOpen(false)}
+            />
     </div>
   );
 };

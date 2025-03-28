@@ -1,3 +1,4 @@
+import { PrescriptionData } from "../pages/Doctor/DocPrescription";
 import { AppointmentDetail } from "../pages/Doctor/DoctorPatient";
 import { doctorApi } from "./axiosInstance";
 
@@ -33,8 +34,15 @@ export const resendDoctorOtpData = async (email: string) => {
 
 export const sendDoctorLoginData = async (docData: { email: string, password: string }) => {
   try {
-    const response = await doctorApi.post(`/login`, docData)
-    console.log(response, 'the response from the doctor backend is coming')
+    const DoctorData = {
+      Email: docData.email,
+      password: docData.password,
+    };
+
+    console.log(DoctorData, "Modified DoctorData before sending");
+
+    const response = await doctorApi.post(`/login`, DoctorData);
+    
     return response.data
   } catch (error) {
     throw error
@@ -99,6 +107,68 @@ export const fetchDoctorAppointments = async (doctorId: string) => {
     throw error
   }
 }
+
+export const resetDoctorPassword = async (data: { doctorId: string, oldPassword: string, newPassword: string }) => {
+  try {
+    const response = await doctorApi.post(`/reset-password`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const sendDocOtp = async(email:string)=>{
+  try{
+    console.log(email,'the email is comming or not')
+    const response = await doctorApi.post('/send-forgottenpassword',{email})
+    return response.data
+
+  }catch(error){
+    throw error
+  }
+}
+
+export const verifyDocOtp = async(email:string,otpString:string)=>{
+  try{
+    const response = await doctorApi.post('/verify-forgottenpassword',{email,otpString})
+    return response.data
+  }catch(error){
+    throw error
+  }
+}
+
+export const resetDocforgottenPassword = async(email:string,password:string)=>{
+  try{
+    const response = await doctorApi.post('/reset-forgottenpassword',{email,password})
+    return response.data
+  }catch(error){
+    throw error
+  }
+}
+
+
+export const createPrescription = async (prescriptionData:PrescriptionData) => {
+  try {
+    console.log(prescriptionData,'is this is comming or not from the doctor api page')
+    const response = await doctorApi.post(`/prescription`, prescriptionData)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+
+export const completeAppointment = async (appointmentId: string) => {
+  try {
+    console.log(`Marking appointment ${appointmentId} as complete`);
+    const response = await doctorApi.patch(`/completeappointment/${appointmentId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to mark appointment as complete:', error);
+    throw error;
+  }
+};
+
 
 
 

@@ -120,6 +120,7 @@
 // }
 
 
+import { ReviewSubmission } from '../pages/User/Review';
 import { userApi } from './axiosInstance';
 
 export const sendSignupData = async (userData: { username: string; email: string,password:string}) => {
@@ -153,9 +154,16 @@ export const resendOtpData = async(email:string)=>{
   }
 }
 
-export const sendLoginData = async (userData: { email: string; password: string }) => {
+export const sendLoginData = async (userData: {email: string; password: string }) => {
   try {
-    const response = await userApi.post(`/login`, userData);
+    const UserData = {
+      Email: userData.email,
+      password: userData.password,
+    };
+
+    console.log(UserData, "Modified userData before sending");
+
+    const response = await userApi.post(`/login`, UserData);
     return response.data;
   } catch (error) {
     throw error;
@@ -198,9 +206,28 @@ export const updateUserProfile = async (userData: {
   }
 };
 
-export const fetchVerifiedDoctors = async () => {
+export const fetchVerifiedDoctors = async (params: { 
+  page?: number; 
+  limit?: number; 
+  search?: string; 
+  department?: string;
+}) => {
   try {
-    const response = await userApi.get(`/verified-doctors`);
+    const { page = 1, limit = 3, search = "", department = "" } = params;
+    const queryParams = new URLSearchParams();
+    
+    queryParams.append('page', page.toString());
+    queryParams.append('limit', limit.toString());
+    
+    if (search) {
+      queryParams.append('search', search);
+    }
+    
+    if (department) {
+      queryParams.append('department', department);
+    }
+    
+    const response = await userApi.get(`/verified-doctors?${queryParams.toString()}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -234,10 +261,62 @@ export const createPaymentIntent = async (userId:string,amount:number) => {
   }
 }
 
-export const fetchAppointmentDetails = async (userId:string) => {
+// export const fetchAppointmentDetails = async (userId:string) => {
+//   try {
+//     console.log(userId,'the answer is comming the user Id')
+//     const response = await userApi.get(`/appointment-details/${userId}`)
+//     return response.data
+//   } catch (error) {
+//     throw error
+//   }
+// }
+
+export const fetchAppointmentDetails = async (
+  userId: string, 
+  page: number = 1, 
+  pageSize: number = 3
+) => {
   try {
-    console.log(userId,'the answer is comming the user Id')
-    const response = await userApi.get(`/appointment-details/${userId}`)
+    console.log(userId, 'the answer is coming the user Id')
+    const response = await userApi.get(`/appointment-details/${userId}`, {
+      params: { page, pageSize }
+    })
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+
+// export const fetchcancelcompleteAppointmentdetails = async (userId:string) => {
+//   try {
+//     console.log(userId,'the answer is comming the user Id')
+//     const response = await userApi.get(`/cancelandcompleteappointment-details/${userId}`)
+//     return response.data
+//   } catch (error) {
+//     throw error
+//   }
+// }
+
+export const fetchcancelcompleteAppointmentdetails = async (
+  userId: string,
+  page: number = 1,
+  limit: number = 3,
+  status?: string
+) => {
+  try {
+    const queryParams = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+    })
+    
+    if (status) {
+      queryParams.append('status', status)
+    }
+    
+    const response = await userApi.get(
+      `/cancelandcompleteappointment-details/${userId}?${queryParams.toString()}`
+    )
     return response.data
   } catch (error) {
     throw error
@@ -254,3 +333,62 @@ export const requestRefund = async (appointmentId: string) => {
 };
 
 
+export const resetPassword = async (data: { userId: string, oldPassword: string, newPassword: string }) => {
+  try {
+    const response = await userApi.post(`/reset-password`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const sendOtp = async(email:string)=>{
+  try{
+    console.log(email,'the email is comming or not')
+    const response = await userApi.post('/send-forgottenpassword',{email})
+    return response.data
+
+  }catch(error){
+    throw error
+  }
+}
+
+export const verifyOtp = async(email:string,otpString:string)=>{
+  try{
+    const response = await userApi.post('/verify-forgottenpassword',{email,otpString})
+    return response.data
+  }catch(error){
+    throw error
+  }
+}
+
+export const resetforgottenPassword = async(email:string,password:string)=>{
+  try{
+    const response = await userApi.post('/reset-forgottenpassword',{email,password})
+    return response.data
+  }catch(error){
+    throw error
+  }
+}
+
+
+export const getPrescriptionByAppointmentId = async (appointmentId: string): Promise<any> => {
+  try {
+    console.log(`${appointmentId}is the userApi for the get prescription is working`)
+    const response = await userApi.get(`/prescriptions/${appointmentId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const submitAppointmentReview = async (reviewData: ReviewSubmission): Promise<any> => {
+  try {
+    console.log(`Submitting review for appointment: ${reviewData.appointmentid}`);
+    const response = await userApi.post('/reviews', reviewData);
+    return response.data;
+  } catch (error) {
+    console.error('Error submitting review:', error);
+    throw error;
+  }
+}

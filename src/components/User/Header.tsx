@@ -1,6 +1,5 @@
 
-
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../redux/userSlice';
@@ -15,7 +14,9 @@ import {
   IconButton,
   Typography
 } from '@mui/material';
-import { User, Calendar, MessageSquare, Wallet, LogOut } from 'lucide-react';
+import { User, Calendar, LogOut } from 'lucide-react';
+import io, { Socket } from "socket.io-client";
+import Swal from 'sweetalert2';
 
 interface RootState {
   user: {
@@ -23,15 +24,134 @@ interface RootState {
     error: string | null;
     profile_pic?: string;
     username?: string;
+    _id?: string;
+    role?: string;
   };
+}
+
+interface CallNotificationData {
+  appointmentId: string;
+  userId: string;
+  doctorName: string;
+  doctorId: string;
 }
 
 const Header: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { isActive, profile_pic, username } = useSelector((state: RootState) => state.user);
+  const { isActive, profile_pic, username, _id:id, role } = useSelector((state: RootState) => state.user);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const socketRef = useRef<Socket | null>(null);
+  const [socketConnected, setSocketConnected] = useState(false);
+
+  useEffect(() => {
+      
+      socketRef.current = io("http://localhost:3000", {
+        withCredentials: true,
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000,
+      });
+
+      socketRef.current.on("connect", () => {
+        console.log("Socket connected with ID:", socketRef.current?.id);
+        setSocketConnected(true);
+        // Join chat with user ID
+        socketRef.current?.emit("joinChat", id);
+        console.log("Emitted joinChat with user ID:", id);
+      });
+
+      socketRef.current.on("connect_error", (error) => {
+        console.error("Socket connection error:", error);
+        setSocketConnected(false);
+      });
+      
+      // Listen specifically for callNotificationemit event
+      socketRef.current.on("callNotificationemit", (data: CallNotificationData) => {
+        console.log("Received call notification emit:", data);
+        
+        // Check if the notification is for the current user
+        console.log(id,'is the id is comming or not ')
+        if (data.userId === id) {
+          console.log("Call notification matches current user");
+          showCallAlert(data);
+        }
+      });
+
+      socketRef.current.on("disconnect", (reason) => {
+        console.log("Socket disconnected:", reason);
+        setSocketConnected(false);
+      });
+
+      return () => {
+        console.log("Cleaning up socket connection");
+        if (socketRef.current) {
+          socketRef.current.off("connect");
+          socketRef.current.off("connect_error");
+          socketRef.current.off("callNotificationemit");
+          socketRef.current.off("disconnect");
+          socketRef.current.disconnect();
+        }
+      };
+    
+  }, [isActive, id, role]);
+
+  useEffect(() => {
+    if ( socketRef.current ) {
+      socketRef.current.emit("joinChat", id);
+      console.log("Re-joined chat with user ID:", id);
+    }
+  }, [id, socketConnected]);
+
+  const showCallAlert = (data: CallNotificationData) => {
+    const { appointmentId, doctorName, doctorId } = data;
+    
+    Swal.fire({
+      title: 'Incoming Video Call',
+      html: `<p>Dr. ${doctorName} is calling you for your appointment.</p>`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Join Call',
+      cancelButtonText: 'Decline',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      timer: 60000,
+      timerProgressBar: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Inform the server that call was accepted
+        if (socketRef.current) {
+          socketRef.current.emit("callAccepted", {
+            appointmentId,
+            userId: id,
+            doctorId: doctorId
+          });
+        }
+        
+        navigate(`/video-call/${appointmentId}`, {
+          state: {
+            appointmentId: appointmentId,
+            userId: id,
+            userRole: 'patient',
+            userName: username || 'Patient',
+            doctorId: doctorId
+          }
+        });
+      } else {
+        console.log("Call declined");
+        if (socketRef.current) {
+          socketRef.current.emit("callDeclined", {
+            appointmentId,
+            userId: id,
+            doctorId: doctorId
+          });
+        }
+      }
+    });
+  };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -48,6 +168,11 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        setSocketConnected(false);
+      }
+      
       const resultAction = await dispatch(logoutUser());
       if (logoutUser.fulfilled.match(resultAction)) {
         navigate('/');
@@ -92,9 +217,7 @@ const Header: React.FC = () => {
                   sx={{ width: 40, height: 40 }}
                   src={profile_pic}
                   alt={username || 'User'}
-                >
-                  
-                </Avatar>
+                />
               </IconButton>
               <Typography variant="subtitle1" className="header__user-name">
                 {username || 'User'}
@@ -130,13 +253,9 @@ const Header: React.FC = () => {
                   <Calendar size={18} />
                   Appointments
                 </MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick('/chat')}>
-                  <MessageSquare size={18} />
-                  Chat
-                </MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick('/wallet')}>
-                  <Wallet size={18} />
-                  Wallet
+                <MenuItem onClick={() => handleMenuItemClick('/historyappointment')}>
+                  <Calendar size={18} />
+                  AppointmentsHistory
                 </MenuItem>
                 <Divider />
                 <MenuItem 
@@ -158,4 +277,3 @@ const Header: React.FC = () => {
 };
 
 export default Header;
-

@@ -1,25 +1,27 @@
-import React, { useEffect } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, clearError, googleAuth } from '../../redux/userSlice';
-import { GoogleLogin } from '@react-oauth/google';
+
+import React, { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, clearError, googleAuth } from "../../redux/userSlice";
+import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import './LoginPage.scss';
+import "./LoginPage.scss";
+import ForgotPasswordModal from "../../components/ForgottenPassword/forgottenPassword";
 
 // Define the login schema
 const loginSchema = Yup.object().shape({
   email: Yup.string()
-    .email('Please enter a valid email address')
-    .required('Email is required'),
+    .email("Please enter a valid email address")
+    .required("Email is required"),
   password: Yup.string()
-    .min(8, 'Password must be at least 8 characters')
+    .min(8, "Password must be at least 8 characters")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
     )
-    .required('Password is required'),
+    .required("Password is required"),
 });
 
 // Define types
@@ -39,11 +41,14 @@ interface RootState {
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, isActive } = useSelector((state: RootState) => state.user);
+  const { loading, error, isActive } = useSelector(
+    (state: RootState) => state.user
+  );
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
 
   useEffect(() => {
     if (isActive) {
-      navigate('/');
+      navigate("/");
     }
   }, [isActive, navigate]);
 
@@ -54,8 +59,8 @@ const LoginPage: React.FC = () => {
 
   const formik = useFormik<LoginFormData>({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     validationSchema: loginSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -63,7 +68,7 @@ const LoginPage: React.FC = () => {
         await dispatch(loginUser(values) as any);
         // Navigation is handled by the useEffect hook watching isAuthenticated
       } catch (error) {
-        console.error('Login failed:', error);
+        console.error("Login failed:", error);
       } finally {
         setSubmitting(false);
       }
@@ -87,7 +92,7 @@ const LoginPage: React.FC = () => {
       await dispatch(googleAuth(credentialResponse.credential) as any);
       // Navigation is handled by the useEffect hook watching isActive
     } catch (error: any) {
-      console.error('Google sign-in error:', error);
+      console.error("Google sign-in error:", error);
     }
   };
 
@@ -109,7 +114,7 @@ const LoginPage: React.FC = () => {
               value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              className={touched.email && errors.email ? 'error' : ''}
+              className={touched.email && errors.email ? "error" : ""}
               placeholder="Enter your email"
             />
             {touched.email && errors.email && (
@@ -126,7 +131,7 @@ const LoginPage: React.FC = () => {
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              className={touched.password && errors.password ? 'error' : ''}
+              className={touched.password && errors.password ? "error" : ""}
               placeholder="••••••••"
             />
             {touched.password && errors.password && (
@@ -135,17 +140,25 @@ const LoginPage: React.FC = () => {
           </div>
 
           <div className="remember-forgot">
-            <div className="remember">
-            </div>
-            <a href="#" className="forgot">Forgot password?</a>
+            <div className="remember"></div>
+
+            <a
+              className="forgot"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsForgotPasswordOpen(true);
+              }}
+            >
+              Forgot password?
+            </a>
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="login-button"
             disabled={isSubmitting || loading || Object.keys(errors).length > 0}
           >
-            {loading ? 'Logging in...' : 'Log in'}
+            {loading ? "Logging in..." : "Log in"}
           </button>
 
           {error && <div className="error-message">{error}</div>}
@@ -153,19 +166,22 @@ const LoginPage: React.FC = () => {
           <GoogleLogin
             onSuccess={handleGoogleSignIn}
             onError={() => {
-              console.log('Login Failed');
+              console.log("Login Failed");
             }}
             useOneTap
           />
 
           <div className="signup-link">
-            Don't have an account? <Link to={'/signup'}>signup</Link>
+            Don't have an account? <Link to={"/signup"}>signup</Link>
           </div>
         </form>
       </div>
+      <ForgotPasswordModal
+        isOpen={isForgotPasswordOpen}
+        onClose={() => setIsForgotPasswordOpen(false)}
+      />
     </div>
   );
 };
 
 export default LoginPage;
-

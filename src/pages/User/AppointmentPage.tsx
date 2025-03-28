@@ -1,7 +1,7 @@
 
 import type React from "react"
 import { useState, useEffect, useCallback } from "react"
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams} from "react-router-dom"
 import { useSelector } from "react-redux"
 import type { RootState } from "../../redux/store"
 import { fetchDoctorSlots, bookAppointment } from "../../api/userApi"
@@ -21,7 +21,6 @@ interface Slot {
 
 const AppointmentPage: React.FC = () => {
   const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
   const [slots, setSlots] = useState<Slot[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -82,7 +81,6 @@ const AppointmentPage: React.FC = () => {
         )
         setShowPayment(false)
         setSelectedSlot(null)
-        navigate("/appointment")
       } catch (err) {
         setError("Failed to book appointment")
       }

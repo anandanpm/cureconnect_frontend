@@ -86,7 +86,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ amount, onSuccess, onCancel }
           setError(error.message || "Payment failed")
         } else if (paymentIntent.status === "succeeded") {
           onSuccess(paymentIntent.id) 
-          navigate("/appointment")
+          navigate("/appointment-success")
         }
       } catch (err) {
         setError("An unexpected error occurred")

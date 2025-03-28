@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { sendDoctorSignupData, sendDoctorLoginData, sendDoctorLogoutData, sendDoctorOtpData, resendDoctorOtpData,sendDoctorGoogleAuthData,updateDoctorProfileData} from '../api/doctorApi';
+import { sendDoctorSignupData, sendDoctorLoginData, sendDoctorLogoutData, sendDoctorOtpData, resendDoctorOtpData,sendDoctorGoogleAuthData,updateDoctorProfileData, fetchDoctorAppointments} from '../api/doctorApi';
 import {fetchSlotsApi,createDoctorSlotsApi} from '../api/slotApi';
 
 interface DoctorState {
@@ -23,6 +23,7 @@ interface DoctorState {
   department: string;
   certification?: string;
   _id:string;
+  appointment:any[];
 }
 
 const initialState: DoctorState = {
@@ -45,7 +46,8 @@ const initialState: DoctorState = {
   certification: '',
   gender: '',
   address: '',
-  _id:''
+  _id:'',
+  appointment:[]
 };
 
 
@@ -155,6 +157,18 @@ export const fetchSlots = createAsyncThunk(
    async (doctorId:string,{rejectWithValue}) => {
       try {
         const response = await fetchSlotsApi(doctorId);
+        return response;
+      } catch (error: any) {
+        return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch verified doctors');
+      }
+    }
+)
+
+export const fetchAppointment = createAsyncThunk(
+  'doctor/AppointmentSlots',
+   async (doctorId:string,{rejectWithValue}) => {
+      try {
+        const response = await fetchDoctorAppointments (doctorId);
         return response;
       } catch (error: any) {
         return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch verified doctors');
@@ -335,7 +349,20 @@ const doctorSlice = createSlice({
       .addCase(updateDoctorProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string || 'An unexpected error occurred';
-      });
+      })
+      .addCase(fetchAppointment.pending,(state)=>{
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAppointment.fulfilled,(state,action)=>{
+        state.loading = false;
+        state.appointment = action.payload;
+        state.error = null;
+      })
+      .addCase(fetchAppointment.rejected,(state,action)=>{
+        state.loading = false;
+        state.error = action.payload as string || 'An unexpected error occurred';
+      })
   },
 });
 
