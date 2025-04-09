@@ -122,6 +122,7 @@
 
 import { ReviewSubmission } from '../pages/User/Review';
 import { userApi } from './axiosInstance';
+import axios from 'axios'
 
 export const sendSignupData = async (userData: { username: string; email: string,password:string}) => {
   try {
@@ -227,7 +228,10 @@ export const fetchVerifiedDoctors = async (params: {
       queryParams.append('department', department);
     }
     
-    const response = await userApi.get(`/verified-doctors?${queryParams.toString()}`);
+    // const response = await import.meta.env.VITE_USER_API_URL.get(`/verified-doctors?${queryParams.toString()}`);
+
+const response = await userApi.get(`/verified-doctors?${queryParams.toString()}`);
+
     return response.data;
   } catch (error) {
     throw error;

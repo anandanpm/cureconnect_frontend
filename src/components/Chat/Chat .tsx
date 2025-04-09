@@ -264,7 +264,7 @@ const ChatPage = () => {
       <div className="chat-container">
         <div className="chat-error">
           <div className="chat-error__message">
-            <p>Doctor not found</p>
+            <p>Doctor is not in online please check after some time</p>
           </div>
         </div>
       </div>

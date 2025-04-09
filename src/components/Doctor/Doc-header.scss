@@ -1,3 +1,190 @@
+// // @use "sass:color";
+// // @import url('https://fonts.googleapis.com/css2?family=Lexend+Tera:wght@400;600;700&display=swap');
+
+// // // Variables
+// // $color-white: #fff;
+// // $color-black: #000;
+// // $color-primary: #008080;
+// // $color-secondary: #6EAB36;
+// // $color-gray-100: #f8f9fa;
+// // $color-gray-600: #6c757d;
+// // $color-gray-800: #343a40;
+// // $header-height: 3rem;
+
+// // // Mixins
+// // @mixin transition($property: all, $duration: 0.3s, $timing-function: ease) {
+// //   transition: $property $duration $timing-function;
+// // }
+
+// // @mixin button($background, $color) {
+// //   background-color: $background;
+// //   color: $color;
+// //   border: none;
+// //   padding: 0.75rem 1.25rem;
+// //   border-radius: 8px;
+// //   font-family: 'Lexend Tera', sans-serif;
+// //   cursor: pointer;
+// //   font-weight: 600;
+// //   @include transition;
+
+// //   &:hover {
+// //     background-color: color.adjust($background, $lightness: -10%);
+// //     transform: translateY(-2px);
+// //     box-shadow: 0 4px 6px rgba($color-black, 0.1);
+// //   }
+// // }
+
+// // @mixin gradient-button {
+// //   background: linear-gradient(90deg, #007E85 0%, #00A9A5 100%);
+// //   color: $color-white;
+// //   border: none;
+// //   padding: 0.75rem 1.5rem;
+// //   border-radius: 8px;
+// //   font-family: 'Lexend Tera', sans-serif;
+// //   cursor: pointer;
+// //   font-weight: 600;
+// //   font-size: 0.9rem;
+// //   text-decoration: none;
+// //   @include transition;
+
+// //   &:hover {
+// //     transform: translateY(-2px);
+// //     box-shadow: 0 4px 6px rgba($color-black, 0.1);
+// //     opacity: 0.95;
+// //   }
+// // }
+
+// // // Keyframes
+// // @keyframes fadeInDown {
+// //   from {
+// //     opacity: 0;
+// //     transform: translateY(-20px);
+// //   }
+// //   to {
+// //     opacity: 1;
+// //     transform: translateY(0);
+// //   }
+// // }
+
+// // @keyframes pulse {
+// //   0% {
+// //     transform: scale(1);
+// //   }
+// //   50% {
+// //     transform: scale(1.05);
+// //   }
+// //   100% {
+// //     transform: scale(1);
+// //   }
+// // }
+
+// // .header {
+// //   width: auto;
+// //   position: sticky;
+// //   top: 0;
+// //   z-index: 100;
+// //   height: $header-height;
+// //   background-color: #fff;
+
+// //   &__container {
+// //     display: flex;
+// //     justify-content: flex-start;
+// //     align-items: center;
+// //     max-width: auto;
+// //     background-color: #fff;
+// //     padding: 1ch;
+// //     height: 100%;
+// //   }
+
+// //   &__logo {
+// //     display: flex;
+// //     text-decoration: none;
+// //     white-space: nowrap;
+// //     font-family: 'Lexend Tera', sans-serif;
+// //     font-size: 1.8rem;
+// //     animation: fadeInDown 0.5s ease-out;
+
+// //     img {
+// //       height: 2.5rem;
+// //       margin-left: 0.5rem;
+// //       animation: pulse 2s infinite;
+// //     }
+
+// //     .cura {
+// //       color: #007E85;
+// //       font-weight: 600;
+// //     }
+
+// //     .connect {
+// //       color: $color-secondary;
+// //       font-weight: 600;
+// //     }
+// //   }
+
+// //   &__nav {
+// //     display: flex;
+// //     align-items: center;
+// //     margin-left: 15%;
+// //     padding: 0 4rem;
+// //   }
+
+// //   &__nav-link {
+// //     margin-left: 3rem;
+// //     color: $color-gray-800;
+// //     text-decoration: none;
+// //     @include transition(color);
+// //     font-weight: 500;
+// //     padding: 0.5rem 0;
+// //     position: relative;
+// //     font-family: 'Lexend Tera', sans-serif;
+// //     font-size: 1rem;
+
+// //     &::after {
+// //       content: '';
+// //       position: absolute;
+// //       bottom: 0;
+// //       left: 0;
+// //       width: 0;
+// //       height: 2px;
+// //       @include transition(width);
+// //     }
+
+// //     &:hover {
+// //       color: $color-primary;
+
+// //       &::after {
+// //         width: 100%;
+// //       }
+// //     }
+
+// //     &:first-child {
+// //       margin-left: 0;
+// //     }
+// //   }
+
+// //   &__actions {
+// //     display: flex;
+// //     align-items: center;
+// //     padding-left: 5%;
+// //     gap: 1rem;
+// //     background-color: #fff
+// //   }
+
+// //   &__signup {
+// //     @include gradient-button;
+// //     display: inline-flex;
+// //     align-items: center;
+// //     justify-content: center;
+// //   }
+
+// //   &__login {
+// //     @include gradient-button;
+// //     font-size: 0.9rem;
+// //   }
+// // }
+
+
+
 @use "sass:color";
 @import url('https://fonts.googleapis.com/css2?family=Lexend+Tera:wght@400;600;700&display=swap');
 
@@ -78,26 +265,23 @@ $header-height: 3rem;
   }
 }
 
-.header {
+// Doctor Header Styles
+.doc-header {
   width: auto;
   position: sticky;
   top: 0;
   z-index: 100;
   height: $header-height;
   background-color: #fff;
-
-  &__container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    max-width: auto;
-    background-color: #fff;
-    padding: 1ch;
-    height: 100%;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 5px rgba($color-black, 0.1);
 
   &__logo {
     display: flex;
+    align-items: center;
     text-decoration: none;
     white-space: nowrap;
     font-family: 'Lexend Tera', sans-serif;
@@ -106,82 +290,165 @@ $header-height: 3rem;
 
     img {
       height: 2.5rem;
-      margin-left: 0.5rem;
+      margin-right: 0.5rem;
       animation: pulse 2s infinite;
     }
 
-    .cura {
-      color: #007E85;
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
       font-weight: 600;
-    }
-
-    .connect {
-      color: $color-secondary;
-      font-weight: 600;
+      color: $color-primary;
     }
   }
 
   &__nav {
     display: flex;
     align-items: center;
-    margin-left: 15%;
-    padding: 0 4rem;
-  }
 
-  &__nav-link {
-    margin-left: 3rem;
-    color: $color-gray-800;
-    text-decoration: none;
-    @include transition(color);
-    font-weight: 500;
-    padding: 0.5rem 0;
-    position: relative;
-    font-family: 'Lexend Tera', sans-serif;
-    font-size: 1rem;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      @include transition(width);
+    ul {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      gap: 2rem;
     }
 
-    &:hover {
-      color: $color-primary;
+    li {
+      margin: 0;
+    }
+
+    a {
+      color: $color-gray-800;
+      text-decoration: none;
+      @include transition(color);
+      font-weight: 500;
+      padding: 0.5rem 0;
+      position: relative;
+      font-family: 'Lexend Tera', sans-serif;
+      font-size: 0.9rem;
 
       &::after {
-        width: 100%;
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: $color-primary;
+        @include transition(width);
+      }
+
+      &:hover {
+        color: $color-primary;
+
+        &::after {
+          width: 100%;
+        }
       }
     }
-
-    &:first-child {
-      margin-left: 0;
-    }
   }
 
-  &__actions {
+  &__auth {
     display: flex;
     align-items: center;
-    padding-left: 5%;
     gap: 1rem;
-    background-color: #fff
   }
 
-  &__signup {
-    @include gradient-button;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &__login {
+  &__btn {
     @include gradient-button;
     font-size: 0.9rem;
   }
 }
 
+// Toast Notification Styles
+.Toastify__toast-container {
+  z-index: 9999;
+}
 
+.Toastify__toast {
+  border-radius: 8px;
+  min-height: auto;
+  font-family: 'Lexend Tera', sans-serif;
+}
 
+.Toastify__toast--info {
+  background-color: #e8f5fe;
+  color: #0c5460;
+}
+
+.Toastify__toast--success {
+  background-color: #e8f6e8;
+  color: #155724;
+}
+
+.Toastify__toast--warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.Toastify__toast--error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.Toastify__toast-body {
+  padding: 0.75rem 0;
+  font-size: 0.9rem;
+  
+  p {
+    margin: 0.25rem 0;
+  }
+  
+  strong {
+    font-weight: 600;
+  }
+}
+
+.toast-btn {
+  background: linear-gradient(90deg, #007E85 0%, #00A9A5 100%);
+  color: $color-white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-family: 'Lexend Tera', sans-serif;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  @include transition;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba($color-black, 0.1);
+    opacity: 0.9;
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: 768px) {
+  .doc-header {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem;
+    
+    &__logo {
+      margin-bottom: 1rem;
+    }
+    
+    &__nav {
+      margin-bottom: 1rem;
+      
+      ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+      }
+    }
+    
+    &__auth {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

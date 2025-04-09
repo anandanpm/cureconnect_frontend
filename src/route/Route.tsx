@@ -96,7 +96,7 @@ export const routes: RouteObject[] = [
       { path: "about", element: <About /> },
       {path:'doctordetails',element:<DoctorPage/>},
       {path:"/chat/:appointmentId",element:<Chat/>},
-      {path:"/video-call/:appointmentId",element:<Vediocall/>},
+      {path:"/video-call/:appointmentId/:roomId",element:<Vediocall/>},
 
       {
         path: "profile",
@@ -166,7 +166,7 @@ export const routes: RouteObject[] = [
       { path: "signup", element: <Docsignup /> },
       { path: "login", element: <Doclogin /> },
       {path:'chat/:appointmentId',element:<DocChat/>},
-      {path:'video-call/:appointmentId',element:<Vediocall/>},
+      {path:'video-call/:appointmentId/:roomId',element:<Vediocall/>},
       {
         path: "profile",
         element: (
