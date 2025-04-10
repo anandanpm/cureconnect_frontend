@@ -644,7 +644,6 @@ const AppointmentDetails: React.FC = () => {
 
   const PAGE_SIZE = 3
   const userId = useSelector((state: RootState) => state.user._id)
-  const username = useSelector((state: RootState) => state.user.username)
 
   useEffect(() => {
     if (userId) {

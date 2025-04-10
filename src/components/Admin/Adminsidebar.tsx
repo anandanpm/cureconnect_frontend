@@ -162,7 +162,6 @@ import {
   People as PeopleIcon,
   Assignment as AssignmentIcon,
   Person as PersonIcon,
-  Message as MessageIcon,
   LocalHospital as DoctorIcon
 } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
@@ -174,8 +173,7 @@ const navItems = [
   { path: '/admin/dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
   { path: '/admin/patients', label: 'Patients', icon: <PeopleIcon /> },
   { path: '/admin/doctors', label: 'Doctors', icon: <DoctorIcon /> },
-  { path: '/admin/amount', label: 'Amount', icon: <AssignmentIcon /> },
-  { path: '/admin/complaints', label: 'Complaints', icon: <MessageIcon /> },
+  { path: '/admin/review', label: 'review', icon: <AssignmentIcon /> },
 ];
 
 const Sidebar: React.FC = () => {

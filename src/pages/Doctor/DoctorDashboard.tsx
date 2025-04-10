@@ -1,149 +1,509 @@
-import React from 'react';
-import { User, Calendar, DollarSign, Star, MessageSquare } from 'lucide-react';
+// // import React, { useState, useEffect } from 'react';
+// // import { 
+// //   User, 
+// //   Calendar, 
+// //   Star
+// // } from 'lucide-react';
+// // import { RootState } from '../../redux/store';
+// // import { useSelector } from 'react-redux';
+// // import { getDoctorDashboard } from '../../api/doctorApi';
+// // import { format } from 'date-fns';
+// // import './DoctorDashboard.scss';
+
+// // interface DoctorData {
+// //   stats: {
+// //     totalAppointments: number;
+// //     totalPatients: number;
+// //     averageRating: number;
+// //     totalRevenue:number
+// //   };
+// //   reviews: {
+// //     reviewId: string;
+// //     rating: number;
+// //     reviewText: string;
+// //     patientName: string;
+// //     createdAt: string;
+// //   }[];
+// // }
+
+// // const DoctorDashboard: React.FC = () => {
+// //   const [loading, setLoading] = useState(true);
+// //   const [data, setData] = useState<DoctorData | null>(null);
+// //   const [error, setError] = useState<string | null>(null);
+// //   const doctorId = useSelector((state: RootState) => state.doctor._id);
+
+// //   useEffect(() => {
+// //     const fetchDoctorData = async () => {
+// //       try {
+// //         setLoading(true);
+// //         const response = await getDoctorDashboard(doctorId);
+// //         setData(response);
+// //         setLoading(false);
+// //       } catch (err) {
+// //         setError("Error fetching doctor data. Please try again later.");
+// //         setLoading(false);
+// //         console.error("Error fetching doctor data:", err);
+// //       }
+// //     };
+
+// //     if (doctorId) {
+// //       fetchDoctorData();
+// //     }
+// //   }, [doctorId]);
+
+// //   if (loading) {
+// //     return <div className="doctor-dashboard">Loading...</div>;
+// //   }
+
+// //   if (error) {
+// //     return <div className="doctor-dashboard">{error}</div>;
+// //   }
+
+// //   if (!data) {
+// //     return <div className="doctor-dashboard">No data available for this doctor.</div>;
+// //   }
+
+// //   const { stats, reviews } = data;
+  
+// //   // Function to render star ratings
+// //   const renderStars = (rating: number) => {
+// //     return Array(5).fill(0).map((_, index) => (
+// //       <Star 
+// //         key={index} 
+// //         size={16} 
+// //         fill={index < rating ? "currentColor" : "none"} 
+// //         color={index < rating ? "currentColor" : "#d1d5db"}
+// //       />
+// //     ));
+// //   };
+
+// //   // Format date function
+// //   const formatDate = (dateString: string) => {
+// //     try {
+// //       const date = new Date(dateString);
+// //       return format(date, 'MMM d, yyyy');
+// //     } catch (error) {
+// //       return dateString;
+// //     }
+// //   };
+
+// //   return (
+// //     <div className="doctor-dashboard">
+// //       <h2>Dashboard Overview</h2>
+      
+// //       <div className="dashboard-stats">
+// //         <div className="stat-card">
+// //           <div className="stat-icon">
+// //             <Calendar size={24} />
+// //           </div>
+// //           <div className="stat-content">
+// //             <h3>Appointments</h3>
+// //             <p className="stat-value">{stats.totalAppointments}</p>
+// //           </div>
+// //         </div>
+        
+// //         <div className="stat-card">
+// //           <div className="stat-icon">
+// //             <User size={24} />
+// //           </div>
+// //           <div className="stat-content">
+// //             <h3>Patients</h3>
+// //             <p className="stat-value">{stats.totalPatients}</p>
+// //           </div>
+// //         </div>
+        
+// //         <div className="stat-card">
+// //           <div className="stat-icon">
+// //             <Star size={24} />
+// //           </div>
+// //           <div className="stat-content">
+// //             <h3>Rating</h3>
+// //             <p className="stat-value">{stats.averageRating.toFixed(1)}</p>
+// //             <p className="stat-detail">{reviews.length} reviews</p>
+// //           </div>
+// //         </div>
+// //       </div>
+      
+// //       <div className="reviews-section">
+// //         <h3>Recent Patient Reviews</h3>
+        
+// //         {reviews.length > 0 ? (
+// //           <div className="review-list">
+// //             {reviews.map((review) => (
+// //               <div key={review.reviewId} className="review-item">
+// //                 <div className="review-header">
+// //                   <span className="patient-name">{review.patientName}</span>
+// //                   <span className="review-date">{formatDate(review.createdAt)}</span>
+// //                 </div>
+// //                 <div className="review-rating">
+// //                   {renderStars(review.rating)}
+// //                 </div>
+// //                 <p className="review-text">{review.reviewText}</p>
+// //               </div>
+// //             ))}
+// //           </div>
+// //         ) : (
+// //           <p className="no-reviews">No reviews yet</p>
+// //         )}
+// //       </div>
+// //     </div>
+// //   );
+// // };
+
+// // export default DoctorDashboard;
+
+// import React, { useState, useEffect } from 'react';
+// import { 
+//   User, 
+//   Calendar, 
+//   Star,
+//   DollarSign // Added for revenue icon
+// } from 'lucide-react';
+// import { RootState } from '../../redux/store';
+// import { useSelector } from 'react-redux';
+// import { getDoctorDashboard } from '../../api/doctorApi';
+// import { format } from 'date-fns';
+// import './DoctorDashboard.scss';
+
+// interface DoctorData {
+//   stats: {
+//     totalAppointments: number;
+//     totalPatients: number;
+//     averageRating: number;
+//     totalRevenue: number;
+//   };
+//   reviews: {
+//     reviewId: string;
+//     rating: number;
+//     reviewText: string;
+//     patientName: string;
+//     createdAt: string;
+//   }[];
+// }
+
+// const DoctorDashboard: React.FC = () => {
+//   const [loading, setLoading] = useState(true);
+//   const [data, setData] = useState<DoctorData | null>(null);
+//   const [error, setError] = useState<string | null>(null);
+//   const doctorId = useSelector((state: RootState) => state.doctor._id);
+
+//   useEffect(() => {
+//     const fetchDoctorData = async () => {
+//       try {
+//         setLoading(true);
+//         const response = await getDoctorDashboard(doctorId);
+//         setData(response);
+//         setLoading(false);
+//       } catch (err) {
+//         setError("Error fetching doctor data. Please try again later.");
+//         setLoading(false);
+//         console.error("Error fetching doctor data:", err);
+//       }
+//     };
+
+//     if (doctorId) {
+//       fetchDoctorData();
+//     }
+//   }, [doctorId]);
+
+//   if (loading) {
+//     return <div className="doctor-dashboard">Loading...</div>;
+//   }
+
+//   if (error) {
+//     return <div className="doctor-dashboard">{error}</div>;
+//   }
+
+//   if (!data) {
+//     return <div className="doctor-dashboard">No data available for this doctor.</div>;
+//   }
+
+//   const { stats, reviews } = data;
+  
+//   // Function to render star ratings
+//   const renderStars = (rating: number) => {
+//     return Array(5).fill(0).map((_, index) => (
+//       <Star 
+//         key={index} 
+//         size={16} 
+//         fill={index < rating ? "currentColor" : "none"} 
+//         color={index < rating ? "currentColor" : "#d1d5db"}
+//       />
+//     ));
+//   };
+
+//   // Format date function
+//   const formatDate = (dateString: string) => {
+//     try {
+//       const date = new Date(dateString);
+//       return format(date, 'MMM d, yyyy');
+//     } catch (error) {
+//       return dateString;
+//     }
+//   };
+
+//   return (
+//     <div className="doctor-dashboard">
+//       <h2>Dashboard Overview</h2>
+      
+//       <div className="dashboard-stats">
+//         <div className="stat-card">
+//           <div className="stat-icon">
+//             <Calendar size={24} />
+//           </div>
+//           <div className="stat-content">
+//             <h3>Appointments</h3>
+//             <p className="stat-value">{stats.totalAppointments}</p>
+//           </div>
+//         </div>
+        
+//         <div className="stat-card">
+//           <div className="stat-icon">
+//             <User size={24} />
+//           </div>
+//           <div className="stat-content">
+//             <h3>Patients</h3>
+//             <p className="stat-value">{stats.totalPatients}</p>
+//           </div>
+//         </div>
+        
+//         <div className="stat-card">
+//           <div className="stat-icon">
+//             <Star size={24} />
+//           </div>
+//           <div className="stat-content">
+//             <h3>Rating</h3>
+//             <p className="stat-value">{stats.averageRating.toFixed(1)}</p>
+//             <p className="stat-detail">{reviews.length} reviews</p>
+//           </div>
+//         </div>
+
+//         {/* Added Revenue card */}
+//         <div className="stat-card">
+//           <div className="stat-icon revenue-icon">
+//             <DollarSign size={24} />
+//           </div>
+//           <div className="stat-content">
+//             <h3>Revenue</h3>
+//             <p className="stat-value">${stats.totalRevenue.toLocaleString()}</p>
+//           </div>
+//         </div>
+//       </div>
+      
+//       <div className="reviews-section">
+//         <h3>Recent Patient Reviews</h3>
+        
+//         {reviews.length > 0 ? (
+//           <div className="review-list">
+//             {reviews.map((review) => (
+//               <div key={review.reviewId} className="review-item">
+//                 <div className="review-header">
+//                   <span className="patient-name">{review.patientName}</span>
+//                   <span className="review-date">{formatDate(review.createdAt)}</span>
+//                 </div>
+//                 <div className="review-rating">
+//                   {renderStars(review.rating)}
+//                 </div>
+//                 <p className="review-text">{review.reviewText}</p>
+//               </div>
+//             ))}
+//           </div>
+//         ) : (
+//           <p className="no-reviews">No reviews yet</p>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default DoctorDashboard;
+
+
+import React, { useState, useEffect } from 'react';
+import { 
+  User, 
+  Calendar, 
+  Star,
+  DollarSign
+} from 'lucide-react';
+import { RootState } from '../../redux/store';
+import { useSelector } from 'react-redux';
+import { getDoctorDashboard } from '../../api/doctorApi';
+import { format } from 'date-fns';
 import './DoctorDashboard.scss';
 
-interface Review {
-  patientName: string;
-  rating: number;
-  comment: string;
-  date: string;
+interface DoctorData {
+  stats: {
+    totalAppointments: number;
+    totalPatients: number;
+    averageRating: number;
+    totalRevenue: number;
+  };
+  reviews: {
+    reviewId: string;
+    rating: number;
+    reviewText: string;
+    patientName: string;
+    createdAt: string;
+  }[];
 }
 
-interface DoctorDashboardProps {
-  doctorName: string;
-  revenue: {
-    total: number;
-    thisMonth: number;
-    lastMonth: number;
-  };
-  appointments: {
-    completed: number;
-    pending: number;
-    cancelled: number;
-  };
-  reviews: Review[];
-}
+// Default data with zeros for when there's no data
+const defaultData: DoctorData = {
+  stats: {
+    totalAppointments: 0,
+    totalPatients: 0,
+    averageRating: 0,
+    totalRevenue: 0
+  },
+  reviews: []
+};
 
-const DoctorDashboard: React.FC<DoctorDashboardProps> = ({
-  doctorName,
-  revenue,
-  appointments,
-  reviews,
-}) => {
-  // Function to render stars based on rating
-  const renderStars = (rating: number) => {
-    const stars = [];
-    for (let i = 0; i < 5; i++) {
-      stars.push(
-        <Star
-          key={i}
-          size={16}
-          className={i < rating ? "star filled" : "star empty"}
-        />
-      );
+const DoctorDashboard: React.FC = () => {
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<DoctorData>(defaultData);
+  const [error, setError] = useState<string | null>(null);
+  const doctorId = useSelector((state: RootState) => state.doctor._id);
+
+  useEffect(() => {
+    const fetchDoctorData = async () => {
+      try {
+        setLoading(true);
+        const response = await getDoctorDashboard(doctorId);
+        
+        // Ensure we have valid data structure with defaults for missing properties
+        const validatedData: DoctorData = {
+          stats: {
+            totalAppointments: response?.stats?.totalAppointments || 0,
+            totalPatients: response?.stats?.totalPatients || 0,
+            averageRating: response?.stats?.averageRating || 0,
+            totalRevenue: response?.stats?.totalRevenue || 0
+          },
+          reviews: response?.reviews || []
+        };
+        
+        setData(validatedData);
+        setLoading(false);
+      } catch (err) {
+        setError("Error fetching doctor data. Please try again later.");
+        setLoading(false);
+        console.error("Error fetching doctor data:", err);
+        // Set default data with zeros in case of error
+        setData(defaultData);
+      }
+    };
+
+    if (doctorId) {
+      fetchDoctorData();
+    } else {
+      setLoading(false);
+      setData(defaultData);
     }
-    return stars;
+  }, [doctorId]);
+
+  if (loading) {
+    return <div className="doctor-dashboard">Loading...</div>;
+  }
+
+  if (error && !data) {
+    return <div className="doctor-dashboard">{error}</div>;
+  }
+
+  const { stats, reviews } = data;
+  
+  // Function to render star ratings
+  const renderStars = (rating: number) => {
+    return Array(5).fill(0).map((_, index) => (
+      <Star 
+        key={index} 
+        size={16} 
+        fill={index < rating ? "currentColor" : "none"} 
+        color={index < rating ? "currentColor" : "#d1d5db"}
+      />
+    ));
+  };
+
+  // Format date function
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      return format(date, 'MMM d, yyyy');
+    } catch (error) {
+      return dateString;
+    }
   };
 
   return (
-    <div className="dashboard-container">
-      <div className="dashboard-wrapper">
-        {/* Header */}
-        <header className="card">
-          <div className="doctor-profile">
-            <div className="profile-info">
-              <div className="avatar">
-                <User size={24} />
-              </div>
-              <div className="doctor-details">
-                <h1>{doctorName}</h1>
-                <p>Dashboard Overview</p>
-              </div>
-            </div>
-            <div className="last-updated">
-              <p>Last updated</p>
-              <p>{new Date().toLocaleDateString()}</p>
-            </div>
+    <div className="doctor-dashboard">
+      <h2>Dashboard Overview</h2>
+      
+      <div className="dashboard-stats">
+        <div className="stat-card">
+          <div className="stat-icon">
+            <Calendar size={24} />
           </div>
-        </header>
-
-        {/* Revenue and Appointments Stats */}
-        <div className="grid-container">
-          {/* Revenue Card */}
-          <div className="card">
-            <div className="card-header">
-              <DollarSign size={20} className="icon revenue-icon" />
-              <h2>Revenue</h2>
-            </div>
-            <div className="stats-grid">
-              <div className="stat-card">
-                <p>Total</p>
-                <p>${revenue.total.toLocaleString()}</p>
-              </div>
-              <div className="stat-card">
-                <p>This Month</p>
-                <p>${revenue.thisMonth.toLocaleString()}</p>
-              </div>
-              <div className="stat-card">
-                <p>Last Month</p>
-                <p>${revenue.lastMonth.toLocaleString()}</p>
-              </div>
-            </div>
+          <div className="stat-content">
+            <h3>Appointments</h3>
+            <p className="stat-value">{stats.totalAppointments}</p>
           </div>
-
-          {/* Appointments Card */}
-          <div className="card">
-            <div className="card-header">
-              <Calendar size={20} className="icon appointment-icon" />
-              <h2>Appointments</h2>
-            </div>
-            <div className="stats-grid">
-              <div className="stat-card status-completed">
-                <p>Completed</p>
-                <p>{appointments.completed}</p>
-              </div>
-              <div className="stat-card status-pending">
-                <p>Pending</p>
-                <p>{appointments.pending}</p>
-              </div>
-              <div className="stat-card status-cancelled">
-                <p>Cancelled</p>
-                <p>{appointments.cancelled}</p>
-              </div>
-            </div>
+        </div>
+        
+        <div className="stat-card">
+          <div className="stat-icon">
+            <User size={24} />
+          </div>
+          <div className="stat-content">
+            <h3>Patients</h3>
+            <p className="stat-value">{stats.totalPatients}</p>
+          </div>
+        </div>
+        
+        <div className="stat-card">
+          <div className="stat-icon">
+            <Star size={24} />
+          </div>
+          <div className="stat-content">
+            <h3>Rating</h3>
+            <p className="stat-value">{stats.averageRating > 0 ? stats.averageRating.toFixed(1) : '0.0'}</p>
+            <p className="stat-detail">{reviews.length} reviews</p>
           </div>
         </div>
 
-        {/* Patient Reviews */}
-        <div className="card">
-          <div className="card-header">
-            <MessageSquare size={20} className="icon review-icon" />
-            <h2>Patient Reviews</h2>
+        <div className="stat-card">
+          <div className="stat-icon revenue-icon">
+            <DollarSign size={24} />
           </div>
-          
-          {reviews.length > 0 ? (
-            <div className="reviews-container">
-              {reviews.map((review, index) => (
-                <div key={index} className="review">
-                  <div className="review-header">
-                    <div className="patient-info">
-                      <p className="patient-name">{review.patientName}</p>
-                      <div className="stars">
-                        {renderStars(review.rating)}
-                      </div>
-                    </div>
-                    <span className="review-date">{review.date}</span>
-                  </div>
-                  <p className="review-content">{review.comment}</p>
+          <div className="stat-content">
+            <h3>Revenue</h3>
+            <p className="stat-value">${stats.totalRevenue.toLocaleString()}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div className="reviews-section">
+        <h3>Recent Patient Reviews</h3>
+        
+        {reviews && reviews.length > 0 ? (
+          <div className="review-list">
+            {reviews.map((review) => (
+              <div key={review.reviewId} className="review-item">
+                <div className="review-header">
+                  <span className="patient-name">{review.patientName}</span>
+                  <span className="review-date">{formatDate(review.createdAt)}</span>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="no-reviews">
-              <p>No reviews available yet</p>
-            </div>
-          )}
-        </div>
+                <div className="review-rating">
+                  {renderStars(review.rating)}
+                </div>
+                <p className="review-text">{review.reviewText}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="no-reviews">
+            <p>No reviews yet</p>
+            <p className="no-reviews-subtext">Your patient reviews will appear here once they submit feedback.</p>
+          </div>
+        )}
       </div>
     </div>
   );

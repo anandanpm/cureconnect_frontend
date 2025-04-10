@@ -169,6 +169,16 @@ export const completeAppointment = async (appointmentId: string) => {
   }
 };
 
+export const getDoctorDashboard = async(doctorId:string)=>{
+  try {
+    const response = await doctorApi.get(`/dashboard/${doctorId}`)
+    return response.data
+  }
+  catch (error) {
+    console.error('Failed to fetch details from the doctor dashboard:', error)
+  }
+}
+
 
 
 

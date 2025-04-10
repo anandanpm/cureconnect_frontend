@@ -32,6 +32,8 @@ import Prescription from '../pages/Doctor/DocPrescription'
 import Vediocall from "../components/Video/Vediocall";
 import PrescriptionDetails from "../pages/User/Prescription";
 import Review from "../pages/User/Review"
+import AdminReview from '../pages/Admin/AdminReview'
+import DoctorDashboard from "../pages/Doctor/DoctorDashboard";
 
 export const routes: RouteObject[] = [
   // Standalone OTP routes (no layout)
@@ -71,6 +73,17 @@ export const routes: RouteObject[] = [
     ), 
     children: [ 
       { index: true, element: <AdminDoctor /> } 
+    ] 
+  },
+  { 
+    path: "/admin/review", 
+    element: ( 
+      <ProtectedRoute adminOnly> 
+        <AdminLayout /> 
+      </ProtectedRoute> 
+    ), 
+    children: [ 
+      { index: true, element: <AdminReview/> } 
     ] 
   },
   { 
@@ -188,6 +201,14 @@ export const routes: RouteObject[] = [
         element: (
           <ProtectedRoute doctorOnly>
             <DoctorAppointment/>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "dashboard",
+        element: (
+          <ProtectedRoute doctorOnly>
+            <DoctorDashboard/>
           </ProtectedRoute>
         ),
       },

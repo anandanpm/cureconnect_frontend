@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { sendAdminLoginData, sendAdminLogoutData, fetchVerifyDoctorData, toggleDoctorStatusApi, verifyDoctorApi,fetchPatientData,togglePatientStatusApi,fetchDoctorData, rejectDoctorApi } from '../api/adminApi';
+import { sendAdminLoginData, sendAdminLogoutData, fetchVerifyDoctorData, toggleDoctorStatusApi, verifyDoctorApi,fetchPatientData,togglePatientStatusApi,fetchDoctorData, rejectDoctorApi,fetchReviewdetails } from '../api/adminApi';
 interface AdminState {
   username: string;
   email: string;
@@ -132,6 +132,18 @@ export const togglePatientStatus = createAsyncThunk(
     }
   }
 );
+
+export const fetchReviews = createAsyncThunk(
+  'admin/fetchReviews',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetchReviewdetails();
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch reviews');
+    }
+  }
+)
 
 
 const adminSlice = createSlice({

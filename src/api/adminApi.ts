@@ -118,3 +118,12 @@ export const fetchAppointmentStats = async (timeRange: string): Promise<ChartDat
     throw error;
   }
 };
+
+export const fetchReviewdetails = async () => {
+  try {
+    const response = await adminApi.get(`/review`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}

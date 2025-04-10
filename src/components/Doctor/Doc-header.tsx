@@ -201,6 +201,7 @@ const DocHeader: React.FC = () => {
             <li><Link to="/doctor/appointment">Appointment</Link></li>
             <li><Link to="/doctor/patient">Patient</Link></li>
             <li><Link to="/doctor/profile">Profile</Link></li>
+            <li><Link to="/doctor/dashboard">dashboard</Link></li>
           </ul>
         </nav>
         <div className="doc-header__auth">
