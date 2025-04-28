@@ -2,7 +2,7 @@ import React from 'react';
 import './Doc-Footer.scss';
 
 
-interface FooterProps {}
+interface FooterProps { }
 
 const DocFooter: React.FC<FooterProps> = () => {
   return (
@@ -15,7 +15,7 @@ const DocFooter: React.FC<FooterProps> = () => {
             | All Rights Reserved
           </p>
         </div>
-        
+
         <div className="footer__content">
           <div className="footer__section">
             <h3 className="footer__section-title">Important links</h3>

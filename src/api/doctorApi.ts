@@ -2,6 +2,7 @@ import { PrescriptionData } from "../pages/Doctor/DocPrescription";
 import { AppointmentDetail } from "../pages/Doctor/DoctorPatient";
 import { doctorApi } from "./axiosInstance";
 
+
 export const sendDoctorSignupData = async (docData: { username: string; email: string, password: string }) => {
   try {
     const response = await doctorApi.post(`/getOtp`, docData)
@@ -42,7 +43,7 @@ export const sendDoctorLoginData = async (docData: { email: string, password: st
     console.log(DoctorData, "Modified DoctorData before sending");
 
     const response = await doctorApi.post(`/login`, DoctorData);
-    
+
     return response.data
   } catch (error) {
     throw error
@@ -56,7 +57,7 @@ export const sendDoctorLogoutData = async () => {
     return response
   } catch (error) {
     throw error
-  } 
+  }
 }
 
 export const sendDoctorGoogleAuthData = async (token: string) => {
@@ -84,7 +85,7 @@ export const updateDoctorProfileData = async (profileData: {
   department?: string;
   certification?: string;
   profile_pic?: string;
-  _id:string;
+  _id: string;
 }) => {
   try {
     const response = await doctorApi.put(`/profile`, profileData)
@@ -94,9 +95,6 @@ export const updateDoctorProfileData = async (profileData: {
     throw error
   }
 }
-
-
-
 
 export const fetchDoctorAppointments = async (doctorId: string) => {
   try {
@@ -117,46 +115,44 @@ export const resetDoctorPassword = async (data: { doctorId: string, oldPassword:
   }
 };
 
-export const sendDocOtp = async(email:string)=>{
-  try{
-    console.log(email,'the email is comming or not')
-    const response = await doctorApi.post('/send-forgottenpassword',{email})
-    return response.data
-
-  }catch(error){
-    throw error
-  }
-}
-
-export const verifyDocOtp = async(email:string,otpString:string)=>{
-  try{
-    const response = await doctorApi.post('/verify-forgottenpassword',{email,otpString})
-    return response.data
-  }catch(error){
-    throw error
-  }
-}
-
-export const resetDocforgottenPassword = async(email:string,password:string)=>{
-  try{
-    const response = await doctorApi.post('/reset-forgottenpassword',{email,password})
-    return response.data
-  }catch(error){
-    throw error
-  }
-}
-
-
-export const createPrescription = async (prescriptionData:PrescriptionData) => {
+export const sendDocOtp = async (email: string) => {
   try {
-    console.log(prescriptionData,'is this is comming or not from the doctor api page')
-    const response = await doctorApi.post(`/prescription`, prescriptionData)
+    console.log(email, 'the email is comming or not')
+    const response = await doctorApi.post('/send-forgottenpassword', { email })
+    return response.data
+
+  } catch (error) {
+    throw error
+  }
+}
+
+export const verifyDocOtp = async (email: string, otpString: string) => {
+  try {
+    const response = await doctorApi.post('/verify-forgottenpassword', { email, otpString })
     return response.data
   } catch (error) {
     throw error
   }
 }
 
+export const resetDocforgottenPassword = async (email: string, password: string) => {
+  try {
+    const response = await doctorApi.post('/reset-forgottenpassword', { email, password })
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const createPrescription = async (prescriptionData: PrescriptionData) => {
+  try {
+    console.log(prescriptionData, 'is this is comming or not from the doctor api page')
+    const response = await doctorApi.post(`/prescription`, prescriptionData)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
 
 export const completeAppointment = async (appointmentId: string) => {
   try {
@@ -169,7 +165,7 @@ export const completeAppointment = async (appointmentId: string) => {
   }
 };
 
-export const getDoctorDashboard = async(doctorId:string)=>{
+export const getDoctorDashboard = async (doctorId: string) => {
   try {
     const response = await doctorApi.get(`/dashboard/${doctorId}`)
     return response.data
@@ -179,6 +175,15 @@ export const getDoctorDashboard = async(doctorId:string)=>{
   }
 }
 
+export const deleteSlot = async (slotId: string) => {
+  try {
+    const response = await doctorApi.delete(`/deleteSlot/${slotId}`)
+    return response.data
+  } catch (error) {
+    console.error('Failed to delete slot:', error)
+    throw error
+  }
+}
 
 
 

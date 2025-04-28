@@ -1,163 +1,16 @@
 
-
-
-// // import React from 'react';
-// // import { NavLink } from 'react-router-dom';
-// // import { 
-// //   Drawer, 
-// //   List, 
-// //   ListItem,
-// //   ListItemButton,
-// //   ListItemIcon, 
-// //   ListItemText, 
-// //   Typography
-// // } from '@mui/material';
-// // import { 
-// //   Dashboard as DashboardIcon,
-// //   People as PeopleIcon,
-// //   Assignment as AssignmentIcon,
-// //   Person as PersonIcon,
-// //   Message as MessageIcon,
-// //   LocalHospital as DoctorIcon
-// // } from '@mui/icons-material';
-// // import './Adminsidebar.scss';
-
-// // const navItems = [
-// //   { path: '/admin/dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
-// //   { path: '/admin/patients', label: 'Patients', icon: <PeopleIcon /> },
-// //   { path: '/admin/doctors', label: 'Doctors', icon: <DoctorIcon /> },
-// //   { path: '/admin/amount', label: 'Amount', icon: <AssignmentIcon /> },
-// //   { path: '/admin/complaints', label: 'Complaints', icon: <MessageIcon /> },
-// //   { path: '/admin/logout', label: 'Logout', icon: <PersonIcon /> },
-// // ];
-
-// // const Sidebar: React.FC = () => {
-// //   return (
-// //     <Drawer
-// //       variant="permanent"
-// //       className="sidebar"
-// //     >
-// //       <div className="logo">
-// //         <Typography variant="h6" component={NavLink} to="/admin/dashboard">
-// //           CuraConnect
-// //         </Typography>
-// //       </div>
-// //       <List>
-// //         {navItems.map((item) => (
-// //           <NavLink key={item.path} to={item.path} className="nav-link">
-// //             {({ isActive }) => (
-// //               <ListItem disablePadding>
-// //                 <ListItemButton component="div" className={isActive ? 'active' : ''}>
-// //                   <ListItemIcon>
-// //                     {item.icon}
-// //                   </ListItemIcon>
-// //                   <ListItemText primary={item.label} />
-// //                 </ListItemButton>
-// //               </ListItem>
-// //             )}
-// //           </NavLink>
-// //         ))}
-// //       </List>
-// //     </Drawer>
-// //   );
-// // };
-
-// // export default Sidebar;
-
-// import React from 'react';
-// import { NavLink, useNavigate } from 'react-router-dom';
-// import { 
-//   Drawer, 
-//   List, 
-//   ListItem,
-//   ListItemButton,
-//   ListItemIcon, 
-//   ListItemText, 
-//   Typography
-// } from '@mui/material';
-// import { 
-//   Dashboard as DashboardIcon,
-//   People as PeopleIcon,
-//   Assignment as AssignmentIcon,
-//   Person as PersonIcon,
-//   Message as MessageIcon,
-//   LocalHospital as DoctorIcon
-// } from '@mui/icons-material';
-// import { sendAdminLogoutData } from '../../api/adminApi'; // Import the logout function
-// import './Adminsidebar.scss';
-
-// const navItems = [
-//   { path: '/admin/dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
-//   { path: '/admin/patients', label: 'Patients', icon: <PeopleIcon /> },
-//   { path: '/admin/doctors', label: 'Doctors', icon: <DoctorIcon /> },
-//   { path: '/admin/amount', label: 'Amount', icon: <AssignmentIcon /> },
-//   { path: '/admin/complaints', label: 'Complaints', icon: <MessageIcon /> },
-// ];
-
-// const Sidebar: React.FC = () => {
-//   const navigate = useNavigate();
-
-//   const handleLogout = async () => {
-//     try {
-//      let result =  await sendAdminLogoutData(); 
-//      console.log(result)
-//     ; 
-//       navigate('/admin');
-//     } catch (error) {
-//       console.error('Logout failed:', error);
-//     }
-//   };
-
-//   return (
-//     <Drawer variant="permanent" className="sidebar">
-//       <div className="logo">
-//         <Typography variant="h6" component={NavLink} to="/admin/dashboard">
-//           CuraConnect
-//         </Typography>
-//       </div>
-//       <List>
-//         {navItems.map((item) => (
-//           <NavLink key={item.path} to={item.path} className="nav-link">
-//             {({ isActive }) => (
-//               <ListItem disablePadding>
-//                 <ListItemButton component="div" className={isActive ? 'active' : ''}>
-//                   <ListItemIcon>{item.icon}</ListItemIcon>
-//                   <ListItemText primary={item.label} />
-//                 </ListItemButton>
-//               </ListItem>
-//             )}
-//           </NavLink>
-//         ))}
-
-//         {/* Logout Button (Without NavLink) */}
-//         <ListItem disablePadding>
-//           <ListItemButton onClick={handleLogout}>
-//             <ListItemIcon>
-//               <PersonIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="Logout" />
-//           </ListItemButton>
-//         </ListItem>
-//       </List>
-//     </Drawer>
-//   );
-// };
-
-// export default Sidebar;
-
-
 import React from 'react';
-import { NavLink,useNavigate } from 'react-router-dom';
-import { 
-  Drawer, 
-  List, 
+import { NavLink, useNavigate } from 'react-router-dom';
+import {
+  Drawer,
+  List,
   ListItem,
   ListItemButton,
-  ListItemIcon, 
-  ListItemText, 
+  ListItemIcon,
+  ListItemText,
   Typography
 } from '@mui/material';
-import { 
+import {
   Dashboard as DashboardIcon,
   People as PeopleIcon,
   Assignment as AssignmentIcon,
@@ -165,8 +18,8 @@ import {
   LocalHospital as DoctorIcon
 } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../redux/store'; 
-import { logoutAdmin } from '../../redux/adminSlice'; 
+import { AppDispatch } from '../../redux/store';
+import { logoutAdmin } from '../../redux/adminSlice';
 import './Adminsidebar.scss';
 
 const navItems = [
@@ -183,8 +36,8 @@ const Sidebar: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      
-      dispatch(logoutAdmin());    
+
+      dispatch(logoutAdmin());
       navigate('/admin', { replace: true });
     } catch (error) {
       console.error('Logout failed:', error);

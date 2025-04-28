@@ -181,7 +181,7 @@ const ChatPage = () => {
   // Send Message Handler
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!inputMessage.trim()) {
       return;
     }
@@ -203,7 +203,7 @@ const ChatPage = () => {
       }
 
       const newMessage = response.data.messages[response.data.messages.length - 1];
-      
+
       socket.emit("sendMessage", {
         message: newMessage,
         receiverId: appointmentId
@@ -247,7 +247,7 @@ const ChatPage = () => {
         <div className="chat-error">
           <div className="chat-error__message">
             <p>{error}</p>
-            <button 
+            <button
               className="chat-error__retry-button"
               onClick={() => window.location.reload()}
             >
@@ -276,8 +276,8 @@ const ChatPage = () => {
       <div className="chat-header">
         <div className="chat-header__doctor-info">
           {currentDoctor.profile_pic && (
-            <img 
-              src={currentDoctor.profile_pic} 
+            <img
+              src={currentDoctor.profile_pic}
               alt={currentDoctor.username}
               className="chat-header__doctor-avatar"
             />
@@ -309,8 +309,8 @@ const ChatPage = () => {
             </div>
           ) : (
             conversation?.messages.map((message) => (
-              <div 
-                key={message._id} 
+              <div
+                key={message._id}
                 className={`chat-message ${message.sender === user._id ? 'chat-message--sent' : 'chat-message--received'}`}
               >
                 <div className="chat-message__bubble">
@@ -341,7 +341,7 @@ const ChatPage = () => {
             placeholder="Type your message here..."
             disabled={!isConnected}
           />
-          <button 
+          <button
             type="submit"
             className="chat-footer__send-button"
             disabled={!isConnected || !inputMessage.trim()}

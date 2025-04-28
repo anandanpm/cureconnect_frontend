@@ -85,7 +85,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ amount, onSuccess, onCancel }
         if (error) {
           setError(error.message || "Payment failed")
         } else if (paymentIntent.status === "succeeded") {
-          onSuccess(paymentIntent.id) 
+          onSuccess(paymentIntent.id)
           navigate("/appointment-success")
         }
       } catch (err) {

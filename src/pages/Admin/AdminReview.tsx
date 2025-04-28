@@ -111,9 +111,9 @@ const ReviewList: React.FC = () => {
       </div>
       {reviews.length > reviewsPerPage && (
         <div className="pagination">
-          <button 
-            onClick={() => paginate(currentPage - 1)} 
-            disabled={currentPage === 1} 
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
             className="pagination__btn"
           >
             <ChevronLeft size={20} />

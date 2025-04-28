@@ -4,6 +4,8 @@ $secondary-color: #f0f0f0;
 $text-color: #333;
 $star-color: #ffc107;
 $star-hover-color: #ffd54f;
+$error-color: #e53935;
+$success-color: #2e7d32;
 
 .rating-review-container {
   max-width: 500px;
@@ -12,6 +14,37 @@ $star-hover-color: #ffd54f;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .error-message, .success-message {
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .error-message {
+    background-color: #ffebee;
+    color: $error-color;
+    border: 1px solid #ef9a9a;
+  }
+
+  .success-message {
+    background-color: #e8f5e9;
+    color: $success-color;
+    border: 1px solid #a5d6a7;
+    animation: fadeOut 1.5s ease-in-out forwards;
+    animation-delay: 1s;
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
 
   .rating-review-form {
     display: flex;
@@ -49,6 +82,14 @@ $star-hover-color: #ffd54f;
         color: $text-color;
         font-size: 0.9rem;
       }
+    }
+
+    .error-text {
+      color: $error-color;
+      font-size: 0.85rem;
+      margin-top: 5px;
+      margin-bottom: 0;
+      text-align: left;
     }
 
     .review-section {

@@ -134,7 +134,6 @@ const VideoCallComponent: React.FC<VideoCallProps> = (props) => {
         })
       } catch (err) {
         console.error("Failed to initialize video call:", err)
-        // alert(`Failed to initialize video call: ${err instanceof Error ? err.message : "Unknown error"}`)
       }
     }
 
@@ -165,4 +164,3 @@ const VideoCallComponent: React.FC<VideoCallProps> = (props) => {
 }
 
 export default VideoCallComponent
-

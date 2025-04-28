@@ -52,7 +52,7 @@ const Pagination: React.FC<PaginationProps> = ({
         totalPages
       ];
     }
-    
+
     return range(1, totalPages);
   };
 
@@ -60,14 +60,14 @@ const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <div className="pagination">
-      <button 
-        onClick={() => onPageChange(currentPage - 1)} 
-        disabled={currentPage === 1} 
+      <button
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
         className="pagination-button"
       >
         <ChevronLeft />
       </button>
-      
+
       {pages.map((page, index) => (
         page === '...' ? (
           <span key={`ellipsis-${index}`} className="pagination-ellipsis">...</span>
@@ -81,7 +81,7 @@ const Pagination: React.FC<PaginationProps> = ({
           </button>
         )
       ))}
-      
+
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}

@@ -51,7 +51,6 @@ export const togglePatientStatusApi = async (patientId: string, newStatus: boole
   }
 };
 
-
 export const fetchDoctorData = async () => {
   try {
     const response = await adminApi.get(`/doctors`);
@@ -64,7 +63,7 @@ export const fetchDoctorData = async () => {
 export const fetchVerifyDoctorData = async () => {
   try {
     const response = await adminApi.get(`/verifydoctors`);
-    console.log(response.data,'the details of the doctor is comming')
+    console.log(response.data, 'the details of the doctor is comming')
     return response.data;
 
   } catch (error) {

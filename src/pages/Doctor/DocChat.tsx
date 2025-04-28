@@ -21,7 +21,7 @@ interface Doctor {
   clinic_name: string
   about: string
   experience: string
-  appointment:[]
+  appointment: []
 }
 
 interface RootState {
@@ -276,9 +276,8 @@ const ChatPage = () => {
           </div>
         </div>
         <div
-          className={`connection-status ${
-            isConnected ? "connection-status--connected" : "connection-status--disconnected"
-          }`}
+          className={`connection-status ${isConnected ? "connection-status--connected" : "connection-status--disconnected"
+            }`}
         >
           {isConnected ? "Connected" : "Disconnected"}
         </div>

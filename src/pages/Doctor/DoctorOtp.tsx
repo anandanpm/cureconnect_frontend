@@ -1,6 +1,6 @@
 
 
-import  { useState, useRef, useEffect, KeyboardEvent, ClipboardEvent } from 'react'
+import { useState, useRef, useEffect, KeyboardEvent, ClipboardEvent } from 'react'
 import Image from '../../assets/otp-image.gif'
 import './DoctorOtp.scss'
 import axios from 'axios'
@@ -88,9 +88,9 @@ export default function DoctorOTPVerification() {
         const otpString = otp.join('')
         if (otpString.length === 4) {
             try {
-                await dispatch(verifyDoctorOtp({ email, otp:otpString })).unwrap()
+                await dispatch(verifyDoctorOtp({ email, otp: otpString })).unwrap()
                 console.log('OTP verified successfully')
-                navigate('/doctor/doclogin')
+                navigate('/doctor/login')
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response) {
                     setError(error.response.data.message || 'Invalid OTP. Please try again.')

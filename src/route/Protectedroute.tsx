@@ -20,7 +20,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const user = useSelector((state: any) => state.user);
   const doctor = useSelector((state: any) => state.doctor);
 
-  if (!admin && !user &&!doctor) {
+  if (!admin && !user && !doctor) {
 
     return <Navigate to="/" replace />;
   }
@@ -35,7 +35,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to="/login" replace />;
   }
 
-  if(doctorOnly && doctor.role !== "doctor"){
+  if (doctorOnly && doctor.role !== "doctor") {
     return <Navigate to="/doctor/login" replace />;
   }
 

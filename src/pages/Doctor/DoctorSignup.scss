@@ -56,14 +56,15 @@
       font-weight: 500;
     }
 
-    input, select {
+    input,
+    select {
       width: 100%;
       padding: 0.875rem;
       border: 1.5px solid #e2e8f0;
       border-radius: 0.5rem;
       font-size: 0.975rem;
       transition: all 0.3s ease;
-      
+
       &:focus {
         outline: none;
         border-color: #4299e1;
@@ -98,7 +99,7 @@
       }
     }
 
-    input.error + .error-message {
+    input.error+.error-message {
       opacity: 1;
       transform: translateY(0);
     }
@@ -112,7 +113,7 @@
 
     .specialty-option {
       position: relative;
-      
+
       input[type="radio"] {
         display: none;
       }
@@ -136,7 +137,7 @@
         }
       }
 
-      input[type="radio"]:checked + label {
+      input[type="radio"]:checked+label {
         border-color: #4299e1;
         background-color: #ebf8ff;
 
@@ -225,8 +226,13 @@
       background-color: #e2e8f0;
     }
 
-    &::before { left: 0; }
-    &::after { right: 0; }
+    &::before {
+      left: 0;
+    }
+
+    &::after {
+      right: 0;
+    }
   }
 
   .google-button {

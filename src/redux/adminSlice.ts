@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { sendAdminLoginData, sendAdminLogoutData, fetchVerifyDoctorData, toggleDoctorStatusApi, verifyDoctorApi,fetchPatientData,togglePatientStatusApi,fetchDoctorData, rejectDoctorApi,fetchReviewdetails } from '../api/adminApi';
+import { sendAdminLoginData, sendAdminLogoutData, fetchVerifyDoctorData, toggleDoctorStatusApi, verifyDoctorApi, fetchPatientData, togglePatientStatusApi, fetchDoctorData, rejectDoctorApi, fetchReviewdetails } from '../api/adminApi';
+
 interface AdminState {
   username: string;
   email: string;
@@ -21,6 +22,7 @@ const initialState: AdminState = {
   patients: [],
   error: null,
 };
+
 export const loginAdmin = createAsyncThunk(
   'admin/login',
   async (adminData: { email: string; password: string }, { rejectWithValue }) => {
@@ -38,7 +40,7 @@ export const logoutAdmin = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await sendAdminLogoutData();
-      console.log(response,'the response is comming')
+      console.log(response, 'the response is comming')
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Admin logout failed');
@@ -57,14 +59,15 @@ export const fetchVerifyDoctors = createAsyncThunk(
     }
   }
 );
+
 export const fetchDoctors = createAsyncThunk(
   'admin/fetchDoctors',
-  async(_,{rejectWithValue})=>{
+  async (_, { rejectWithValue }) => {
     try {
       const response = await fetchDoctorData();
       return response
-    } catch (error:any) {
-      return rejectWithValue(error.response?.data?.message||error.message||'Failed to fetch doctor data');
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch doctor data');
     }
   }
 )
@@ -76,7 +79,7 @@ export const toggleDoctorStatus = createAsyncThunk(
       const response = await toggleDoctorStatusApi(doctorId);
       console.log(response)
       return response;
-     
+
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Failed to toggle doctor status');
     }
@@ -106,8 +109,6 @@ export const rejectDoctor = createAsyncThunk(
     }
   },
 )
-
-
 
 export const fetchPatients = createAsyncThunk(
   'admin/fetchPatients',
@@ -144,7 +145,6 @@ export const fetchReviews = createAsyncThunk(
     }
   }
 )
-
 
 const adminSlice = createSlice({
   name: 'admin',

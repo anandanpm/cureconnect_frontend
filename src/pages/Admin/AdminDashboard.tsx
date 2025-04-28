@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, 
+import {
+  BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell
 } from 'recharts';
-import { 
-  Card, CardContent, Typography, Grid, Box, Tabs, Tab, 
+import {
+  Card, CardContent, Typography, Grid, Box, Tabs, Tab,
   Paper, CircularProgress, FormControl, InputLabel, Select, MenuItem,
   SelectChangeEvent
 } from '@mui/material';
-import { 
-  People, Assignment, MedicalServices, TrendingUp, 
+import {
+  People, Assignment, MedicalServices, TrendingUp,
   CalendarToday, DateRange, CalendarViewMonth
 } from '@mui/icons-material';
- import { fetchDashboardMetrics, fetchAppointmentStats } from '../../api/adminApi';
+import { fetchDashboardMetrics, fetchAppointmentStats } from '../../api/adminApi';
 import './AdminDashboard.scss';
 
 interface TabPanelProps {
@@ -65,7 +65,7 @@ const Dashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [tabValue, setTabValue] = useState(0);
   const [timeRange, setTimeRange] = useState<string>('lastWeek');
-  
+
   useEffect(() => {
     loadDashboardData();
   }, [timeRange]);
@@ -75,7 +75,7 @@ const Dashboard: React.FC = () => {
       setLoading(true);
       const dashboardMetrics = await fetchDashboardMetrics();
       const appointmentStats = await fetchAppointmentStats(timeRange);
-      
+
       setMetrics(dashboardMetrics);
       setChartData(appointmentStats);
       setError(null);
@@ -122,7 +122,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="dashboard">
       <h1 className="dashboard__title">Admin Dashboard</h1>
-      
+
       {/* Summary Cards */}
       <div className="dashboard__summary">
         <Grid container spacing={3}>
@@ -141,7 +141,7 @@ const Dashboard: React.FC = () => {
               </CardContent>
             </Card>
           </Grid>
-          
+
           <Grid item xs={12} sm={6} md={3}>
             <Card className="summary-card user-card">
               <CardContent>
@@ -157,7 +157,7 @@ const Dashboard: React.FC = () => {
               </CardContent>
             </Card>
           </Grid>
-          
+
           <Grid item xs={12} sm={6} md={3}>
             <Card className="summary-card appointment-card">
               <CardContent>
@@ -173,7 +173,7 @@ const Dashboard: React.FC = () => {
               </CardContent>
             </Card>
           </Grid>
-          
+
           <Grid item xs={12} sm={6} md={3}>
             <Card className="summary-card revenue-card">
               <CardContent>
@@ -191,7 +191,7 @@ const Dashboard: React.FC = () => {
           </Grid>
         </Grid>
       </div>
-      
+
       {/* Charts Section */}
       <div className="dashboard__charts">
         <Paper elevation={3} className="chart-container">
@@ -201,7 +201,7 @@ const Dashboard: React.FC = () => {
               <Tab icon={<DateRange />} label="Weekly" />
               <Tab icon={<CalendarViewMonth />} label="Yearly" />
             </Tabs>
-            
+
             <FormControl variant="outlined" size="small" className="time-range-selector">
               <InputLabel id="time-range-label">Time Range</InputLabel>
               <Select
@@ -217,7 +217,7 @@ const Dashboard: React.FC = () => {
               </Select>
             </FormControl>
           </Box>
-          
+
           {/* Daily Chart */}
           <TabPanel value={tabValue} index={0}>
             <Typography variant="h6" gutterBottom className="chart-title">
@@ -237,7 +237,7 @@ const Dashboard: React.FC = () => {
               </BarChart>
             </ResponsiveContainer>
           </TabPanel>
-          
+
           {/* Weekly Chart */}
           <TabPanel value={tabValue} index={1}>
             <Typography variant="h6" gutterBottom className="chart-title">
@@ -253,17 +253,17 @@ const Dashboard: React.FC = () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line 
-                  type="monotone" 
-                  dataKey="appointments" 
-                  stroke="#2196f3" 
-                  activeDot={{ r: 8 }} 
+                <Line
+                  type="monotone"
+                  dataKey="appointments"
+                  stroke="#2196f3"
+                  activeDot={{ r: 8 }}
                   name="Appointments"
                 />
               </LineChart>
             </ResponsiveContainer>
           </TabPanel>
-          
+
           {/* Yearly Chart */}
           <TabPanel value={tabValue} index={2}>
             <Typography variant="h6" gutterBottom className="chart-title">
@@ -285,7 +285,7 @@ const Dashboard: React.FC = () => {
           </TabPanel>
         </Paper>
       </div>
-      
+
       {/* Distribution Pie Chart */}
       <div className="dashboard__distribution">
         <Grid container spacing={3}>
@@ -316,7 +316,7 @@ const Dashboard: React.FC = () => {
               </ResponsiveContainer>
             </Paper>
           </Grid>
-          
+
           <Grid item xs={12} md={6}>
             <Paper elevation={3} className="stats-container">
               <Typography variant="h6" gutterBottom className="chart-title">

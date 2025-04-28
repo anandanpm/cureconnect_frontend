@@ -7,7 +7,7 @@ import type { RootState } from "../../redux/store"
 import "./PreviousAppointment.scss"
 import { Button } from "@mui/material"
 import { Info } from "@mui/icons-material"
-import Pagination from "../../components/Pagination/Pagination" 
+import Pagination from "../../components/Pagination/Pagination"
 
 interface AppointmentHistory {
   refund: string
@@ -18,7 +18,7 @@ interface AppointmentHistory {
   startTime: string
   endTime: string
   appointmentDate: string
-  status: string  
+  status: string
   appointmentId: string
   payment_id?: string
   amount?: number | string
@@ -43,7 +43,7 @@ const convertTo12HourFormat = (time: string) => {
 
 const formatAmount = (amount?: number | string): string => {
   if (amount === undefined || amount === null) return "N/A"
-  
+
   // If it's a string, try to convert to number
   const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount
 
@@ -61,7 +61,7 @@ const BookingHistory: React.FC = () => {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState<boolean>(false)
   const [selectedAppointment, setSelectedAppointment] = useState<AppointmentHistory | null>(null)
   const navigate = useNavigate()
-  
+
   const PAGE_SIZE = 3
   const userId = useSelector((state: RootState) => state.user._id)
 
@@ -75,12 +75,12 @@ const BookingHistory: React.FC = () => {
     try {
       setLoading(true)
       const response: PaginatedResponse = await fetchcancelcompleteAppointmentdetails(
-        userId, 
-        currentPage, 
+        userId,
+        currentPage,
         PAGE_SIZE,
         selectedFilter !== "all" ? selectedFilter : undefined
       )
-      
+
       setAppointmentHistory(response.appointments || [])
       setTotalPages(response.totalPages)
       setError(null)
@@ -117,7 +117,7 @@ const BookingHistory: React.FC = () => {
   }
 
   const handleChat = (appointmentId: string): void => {
-    navigate(`/chat/${appointmentId}`)
+    navigate(`/chathistory/${appointmentId}`)
   }
 
   const handlePrescription = (appointmentId: string) => {
@@ -209,7 +209,7 @@ const BookingHistory: React.FC = () => {
                   onClick={() => handleChat(appointment.doctorId)}
                   className="action-button details"
                 >
-                  Chat 
+                  Chat
                 </Button>
               </div>
             </div>
@@ -217,7 +217,7 @@ const BookingHistory: React.FC = () => {
         </div>
 
         {totalPages > 1 && (
-          <Pagination 
+          <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
@@ -231,23 +231,23 @@ const BookingHistory: React.FC = () => {
   return (
     <div className="booking-history">
       <h1>Appointment History</h1>
-      
+
       <div className="filter-options">
-        <Button 
+        <Button
           variant={selectedFilter === "all" ? "contained" : "outlined"}
           onClick={() => handleFilterChange("all")}
           className="filter-button"
         >
           All
         </Button>
-        <Button 
+        <Button
           variant={selectedFilter === "cancelled" ? "contained" : "outlined"}
           onClick={() => handleFilterChange("cancelled")}
           className="filter-button"
         >
           Cancelled
         </Button>
-        <Button 
+        <Button
           variant={selectedFilter === "completed" ? "contained" : "outlined"}
           onClick={() => handleFilterChange("completed")}
           className="filter-button"
@@ -255,7 +255,7 @@ const BookingHistory: React.FC = () => {
           Completed
         </Button>
       </div>
-      
+
       {renderContent()}
 
       {isDetailsModalOpen && selectedAppointment && (
@@ -268,34 +268,34 @@ const BookingHistory: React.FC = () => {
                   <h3>Patient Information</h3>
                   <p><strong>Name:</strong> {selectedAppointment.patientName}</p>
                 </div>
-                
+
                 <div className="detail-section">
                   <h3>Doctor Information</h3>
                   <p><strong>Name:</strong> {selectedAppointment.doctorName}</p>
                   <p><strong>Department:</strong> {selectedAppointment.doctorDepartment}</p>
                 </div>
-                
+
                 <div className="detail-section">
                   <h3>Appointment Information</h3>
                   <p><strong>Date:</strong> {selectedAppointment.appointmentDate}</p>
                   <p><strong>Time:</strong> {convertTo12HourFormat(selectedAppointment.startTime)} - {convertTo12HourFormat(selectedAppointment.endTime)}</p>
                   <p><strong>Status:</strong> <span className={`status ${selectedAppointment.status.toLowerCase()}`}>{selectedAppointment.status}</span></p>
                 </div>
-                
+
                 <div className="detail-section">
                   <h3>Payment Information</h3>
                   <p><strong>Original Amount:</strong> {formatAmount(selectedAppointment.amount)}</p>
                   <p><strong>Payment Refund Amount:</strong> {selectedAppointment.refund || "N/A"}</p>
                 </div>
               </div>
-              
+
               {selectedAppointment.status === "Cancelled" && (
                 <div className="detail-section full-width">
                   <h3>Cancellation Information</h3>
                   <p><strong>Reason:</strong> {selectedAppointment.cancellationReason || "No reason provided"}</p>
                 </div>
               )}
-              
+
               {selectedAppointment.status === "Completed" && (
                 <div className="detail-section full-width">
                   <h3>Completion Notes</h3>

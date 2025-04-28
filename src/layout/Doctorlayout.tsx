@@ -21,13 +21,13 @@ const DoctorLayout: React.FC = () => {
     return <Loading />;
   }
 
-   return (
+  return (
     <>
-<DocHeader/>
-<Outlet/>
-<DocFooter/>
-</>
-   )
+      <DocHeader />
+      <Outlet />
+      <DocFooter />
+    </>
+  )
 
 }
 

@@ -1,44 +1,44 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { sendSignupData, sendLoginData,sendLogoutData,sendGoogleAuthData,updateUserProfile, fetchVerifiedDoctors } from '../api/userApi';
+import { sendSignupData, sendLoginData, sendLogoutData, sendGoogleAuthData, updateUserProfile, fetchVerifiedDoctors } from '../api/userApi';
 
 interface UserState {
   username: string;
   email: string;
   role: string;
-  phone:string;
-  age:string|null;
-  profile_pic:string;
-  gender:string;
-  address:string;
+  phone: string;
+  age: string | null;
+  profile_pic: string;
+  gender: string;
+  address: string;
   isActive: boolean;
   loading: boolean;
-  _id:string;
+  _id: string;
   doctor: any[];
   error: string | null;
   totalDoctors: number;
   totalPages: number;
   currentPage: number;
   departments: string[];
-  
+
 }
 
 const initialState: UserState = {
   username: '',
   email: '',
   role: '',
-  phone:'',
-  age:'',
-  profile_pic:'',
-  gender:'',
-  address:'',
-  _id:'',
+  phone: '',
+  age: '',
+  profile_pic: '',
+  gender: '',
+  address: '',
+  _id: '',
   doctor: [],
   totalDoctors: 0,
   totalPages: 0,
   currentPage: 1,
   departments: [],
 
-  isActive:false,
+  isActive: false,
   loading: false,
   error: null,
 };
@@ -59,9 +59,9 @@ export const loginUser = createAsyncThunk(
   'user/login',
   async (userData: { email: string; password: string }, { rejectWithValue }) => {
     try {
-       console.log(userData,'userData is comming ')
+      console.log(userData, 'userData is comming ')
       const response = await sendLoginData(userData);
-      console.log(response,'the response form the backend is comming')
+      console.log(response, 'the response form the backend is comming')
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Login failed');
@@ -73,7 +73,7 @@ export const logoutUser = createAsyncThunk(
   'user/logout',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await sendLogoutData(); 
+      const response = await sendLogoutData();
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Logout failed');
@@ -86,7 +86,7 @@ export const googleAuth = createAsyncThunk(
   async (token: string, { rejectWithValue }) => {
     try {
       const response = await sendGoogleAuthData(token);
-      console.log(response,'from the backend is comming')
+      console.log(response, 'from the backend is comming')
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Google authentication failed');
@@ -104,14 +104,14 @@ export const updateProfile = createAsyncThunk(
     gender: string;
     address: string;
     profile_pic?: string;
-    _id:string;
+    _id: string;
   }, { rejectWithValue }) => {
     try {
       const response = await updateUserProfile(userData);
-      console.log(response,'the response is comming')
+      console.log(response, 'the response is comming')
       if (response.user) {
         return response.user;
-       
+
       } else {
         return rejectWithValue('Invalid response data');
       }
@@ -121,24 +121,12 @@ export const updateProfile = createAsyncThunk(
   }
 );
 
-// export const getVerifiedDoctors = createAsyncThunk(
-//   'user/getVerifiedDoctors',
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const response = await fetchVerifiedDoctors();
-//       return response;
-//     } catch (error: any) {
-//       return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch verified doctors');
-//     }
-//   }
-// );
-
 export const getVerifiedDoctors = createAsyncThunk(
   'user/getVerifiedDoctors',
-  async (params: { 
-    page?: number; 
-    limit?: number; 
-    search?: string; 
+  async (params: {
+    page?: number;
+    limit?: number;
+    search?: string;
     department?: string;
   } = {}, { rejectWithValue }) => {
     try {
@@ -149,7 +137,6 @@ export const getVerifiedDoctors = createAsyncThunk(
     }
   }
 );
-
 
 const userSlice = createSlice({
   name: 'user',
@@ -174,7 +161,7 @@ const userSlice = createSlice({
       .addCase(signupUser.fulfilled, (state, action) => {
         state.loading = false;
         state.username = action.payload.username;
-        state.email = action.payload.email;   
+        state.email = action.payload.email;
         state.role = action.payload.role;
         state.error = null;
       })
@@ -213,12 +200,12 @@ const userSlice = createSlice({
         state.username = '';
         state.email = '';
         state.role = '';
-        state._id = ''; 
+        state._id = '';
         state.profile_pic = '';
         state.gender = '';
         state.age = '';
         state.phone = '';
-        state.isActive = false; 
+        state.isActive = false;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
@@ -252,9 +239,9 @@ const userSlice = createSlice({
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.loading = false;
-        console.log(action.payload,'action have some problem ')
+        console.log(action.payload, 'action have some problem ')
         if (action.payload) {
-          console.log(action.payload,'the action payload is comming')
+          console.log(action.payload, 'the action payload is comming')
           state.username = action.payload.username || state.username;
           state.email = action.payload.email || state.email;
           state.phone = action.payload.phone || state.phone;
@@ -270,19 +257,6 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string || 'An unexpected error occurred';
       })
-      // .addCase(getVerifiedDoctors.pending, (state) => {
-      //   state.loading = true;
-      //   state.error = null;
-      // })
-      // .addCase(getVerifiedDoctors.fulfilled, (state, action) => {
-      //   state.loading = false;
-      //   state.doctor = action.payload;
-      //   state.error = null;
-      // })
-      // .addCase(getVerifiedDoctors.rejected, (state, action) => {
-      //   state.loading = false;
-      //   state.error = action.payload as string || 'An unexpected error occurred';
-      // })
       .addCase(getVerifiedDoctors.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -299,7 +273,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       });
-    },
+  },
 });
 
 export const { clearError, logout } = userSlice.actions;

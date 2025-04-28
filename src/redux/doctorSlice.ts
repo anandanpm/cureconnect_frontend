@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { sendDoctorSignupData, sendDoctorLoginData, sendDoctorLogoutData, sendDoctorOtpData, resendDoctorOtpData,sendDoctorGoogleAuthData,updateDoctorProfileData, fetchDoctorAppointments} from '../api/doctorApi';
-import {fetchSlotsApi,createDoctorSlotsApi} from '../api/slotApi';
+import { sendDoctorSignupData, sendDoctorLoginData, sendDoctorLogoutData, sendDoctorOtpData, resendDoctorOtpData, sendDoctorGoogleAuthData, updateDoctorProfileData, fetchDoctorAppointments } from '../api/doctorApi';
+import { fetchSlotsApi, createDoctorSlotsApi } from '../api/slotApi';
 
 interface DoctorState {
   username: string;
@@ -9,10 +9,10 @@ interface DoctorState {
   verified: boolean;
   role: string;
   age: string;
-  phone:string;
-  gender:string;
-  address:string;
-  profile_pic:string;
+  phone: string;
+  gender: string;
+  address: string;
+  profile_pic: string;
   loading: boolean;
   error: string | null;
   clinic_name: string;
@@ -22,8 +22,8 @@ interface DoctorState {
   medical_license: string;
   department: string;
   certification?: string;
-  _id:string;
-  appointment:any[];
+  _id: string;
+  appointment: any[];
 }
 
 const initialState: DoctorState = {
@@ -46,10 +46,9 @@ const initialState: DoctorState = {
   certification: '',
   gender: '',
   address: '',
-  _id:'',
-  appointment:[]
+  _id: '',
+  appointment: []
 };
-
 
 export const signupDoctor = createAsyncThunk(
   'doctor/signup',
@@ -92,7 +91,7 @@ export const loginDoctor = createAsyncThunk(
   async (doctorData: { email: string; password: string }, { rejectWithValue }) => {
     try {
       const response = await sendDoctorLoginData(doctorData);
-      console.log(response,'the response from the backend is comming')
+      console.log(response, 'the response from the backend is comming')
       return response;
 
     } catch (error: any) {
@@ -118,7 +117,7 @@ export const updateDoctorProfile = createAsyncThunk(
   async (profileData: Partial<Omit<DoctorState, '_id'>> & { _id: string }, { rejectWithValue }) => {
     try {
       const response = await updateDoctorProfileData(profileData);
-      console.log(response,'the response from the backend is comming');
+      console.log(response, 'the response from the backend is comming');
       return response.updatedDoc;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Failed to update doctor profile');
@@ -139,12 +138,12 @@ export const googleAuthDoctor = createAsyncThunk(
   }
 );
 
-export const createDoctorSlots= createAsyncThunk(
+export const createDoctorSlots = createAsyncThunk(
   'doctor/createSlots',
   async (slots: { doctor_id: string; day: string; start_time: string; end_time: string; status: "available" | "booked"; created_at?: Date; updated_at?: Date; }, { rejectWithValue }): Promise<any> => {
     try {
       const response = await createDoctorSlotsApi(slots);
-      console.log(response,'the message from the response create slot')
+      console.log(response, 'the message from the response create slot')
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Failed to create doctor slots');
@@ -154,26 +153,26 @@ export const createDoctorSlots= createAsyncThunk(
 
 export const fetchSlots = createAsyncThunk(
   'doctor/fetchSlots',
-   async (doctorId:string,{rejectWithValue}) => {
-      try {
-        const response = await fetchSlotsApi(doctorId);
-        return response;
-      } catch (error: any) {
-        return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch verified doctors');
-      }
+  async (doctorId: string, { rejectWithValue }) => {
+    try {
+      const response = await fetchSlotsApi(doctorId);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch verified doctors');
     }
+  }
 )
 
 export const fetchAppointment = createAsyncThunk(
   'doctor/AppointmentSlots',
-   async (doctorId:string,{rejectWithValue}) => {
-      try {
-        const response = await fetchDoctorAppointments (doctorId);
-        return response;
-      } catch (error: any) {
-        return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch verified doctors');
-      }
+  async (doctorId: string, { rejectWithValue }) => {
+    try {
+      const response = await fetchDoctorAppointments(doctorId);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch verified doctors');
     }
+  }
 )
 
 const doctorSlice = createSlice({
@@ -265,7 +264,7 @@ const doctorSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      
+
       .addCase(logoutDoctor.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -276,16 +275,16 @@ const doctorSlice = createSlice({
         state.email = '';
         state.role = '';
         state.profile_pic = '';
-        state.about='';
-        state.address='';
-        state.age='';
-        state.certification='';
-        state.department='';
-        state.education='';
-        state.experience='';
-        state.medical_license='';
-        state.phone='';
-        state.clinic_name='';
+        state.about = '';
+        state.address = '';
+        state.age = '';
+        state.certification = '';
+        state.department = '';
+        state.education = '';
+        state.experience = '';
+        state.medical_license = '';
+        state.phone = '';
+        state.clinic_name = '';
         state.isActive = false;
         state.verified = false;
         state._id = '';
@@ -350,16 +349,16 @@ const doctorSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string || 'An unexpected error occurred';
       })
-      .addCase(fetchAppointment.pending,(state)=>{
+      .addCase(fetchAppointment.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchAppointment.fulfilled,(state,action)=>{
+      .addCase(fetchAppointment.fulfilled, (state, action) => {
         state.loading = false;
         state.appointment = action.payload;
         state.error = null;
       })
-      .addCase(fetchAppointment.rejected,(state,action)=>{
+      .addCase(fetchAppointment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string || 'An unexpected error occurred';
       })

@@ -56,7 +56,7 @@ const DocMainpage: React.FC = () => {
             </div>
           </div>
           <div className="hero__image">
-            <img 
+            <img
               src={Doctorimage}
               alt="Medical professional"
               className="hero__image-content"

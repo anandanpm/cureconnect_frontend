@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { verifyDocOtp,resetDocforgottenPassword,sendDocOtp } from '../../api/doctorApi';
+import { verifyDocOtp, resetDocforgottenPassword, sendDocOtp } from '../../api/doctorApi';
 import {
   Dialog,
   DialogTitle,
@@ -52,7 +52,7 @@ export default function ForgotDocPasswordModal({ isOpen, onClose }: ForgotPasswo
   // Timer effect
   React.useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
-    
+
     if (timerActive && timer > 0) {
       interval = setInterval(() => {
         setTimer((prevTimer) => prevTimer - 1);
@@ -60,7 +60,7 @@ export default function ForgotDocPasswordModal({ isOpen, onClose }: ForgotPasswo
     } else if (timer === 0) {
       setTimerActive(false);
     }
-    
+
     return () => {
       if (interval) clearInterval(interval);
     };
@@ -138,8 +138,8 @@ export default function ForgotDocPasswordModal({ isOpen, onClose }: ForgotPasswo
     onSubmit: async (values) => {
       try {
         setLoading(true)
-         let result = await resetDocforgottenPassword(email, values.password)
-         console.log(result)
+        let result = await resetDocforgottenPassword(email, values.password)
+        console.log(result)
         onClose()
       } catch (error) {
         console.error("Error resetting password:", error)
@@ -222,7 +222,7 @@ export default function ForgotDocPasswordModal({ isOpen, onClose }: ForgotPasswo
               error={otpForm.touched.otp && Boolean(otpForm.errors.otp)}
               helperText={otpForm.touched.otp && otpForm.errors.otp}
             />
-            
+
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 1, mb: 2 }}>
               <Typography variant="body2" color="textSecondary">
                 {timerActive ? `Resend in ${formatTime(timer)}` : ''}
@@ -233,7 +233,7 @@ export default function ForgotDocPasswordModal({ isOpen, onClose }: ForgotPasswo
                 onClick={() => !timerActive && handleResendOtp()}
                 disabled={timerActive || loading}
                 underline="hover"
-                sx={{ 
+                sx={{
                   cursor: timerActive ? 'default' : 'pointer',
                   color: timerActive ? 'text.disabled' : 'primary.main',
                 }}
@@ -241,7 +241,7 @@ export default function ForgotDocPasswordModal({ isOpen, onClose }: ForgotPasswo
                 Resend OTP
               </Link>
             </Box>
-            
+
             <Button type="submit" fullWidth variant="contained" disabled={loading} sx={{ mt: 2 }}>
               {loading ? "Verifying..." : "Verify OTP"}
             </Button>

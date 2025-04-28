@@ -27,7 +27,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { RootState, AppDispatch } from '../../redux/store'
 import { updateDoctorProfile } from '../../redux/doctorSlice'
 import { uploadImageToCloudinary } from '../../services/Cloudinary'
-import {resetDoctorPassword} from '../../api/doctorApi';
+import { resetDoctorPassword } from '../../api/doctorApi';
 import './DoctorProfile.scss'
 
 
@@ -100,7 +100,7 @@ export default function DoctorProfile() {
       setUploading(true)
       try {
         const imageUrl = await uploadImageToCloudinary(file)
-        
+
         if (field === 'profile_pic') {
           setProfileImageUrl(imageUrl)
         } else if (field === 'certification') {
@@ -128,11 +128,11 @@ export default function DoctorProfile() {
         certification: certificateUrl,
         username: values.userName // Map userName to username for backend
       }
-      
+
       console.log('Submitting data:', updateData)
       const result = await dispatch(updateDoctorProfile(updateData)).unwrap()
       console.log('Update result:', result)
-      
+
       setSnackbarMessage('Profile updated successfully')
       setSnackbarOpen(true)
     } catch (error) {
@@ -382,7 +382,7 @@ export default function DoctorProfile() {
                   className='MuiTextField-root'
                 />
               </Grid>
-              
+
               <Grid item xs={12}>
                 <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
                   <Typography>Certification</Typography>
@@ -405,16 +405,16 @@ export default function DoctorProfile() {
                     </Button>
                   </label>
                 </Box>
-                
+
                 {certificateUrl && (
                   <Box className='certificate-preview' mb={2}>
-                    <img 
-                      src={certificateUrl} 
-                      alt="Certificate" 
-                      style={{ 
-                        maxWidth: '100%', 
-                        maxHeight: '200px', 
-                        objectFit: 'contain' 
+                    <img
+                      src={certificateUrl}
+                      alt="Certificate"
+                      style={{
+                        maxWidth: '100%',
+                        maxHeight: '200px',
+                        objectFit: 'contain'
                       }}
                     />
                   </Box>
@@ -486,7 +486,7 @@ export default function DoctorProfile() {
                 oldPassword: values.oldPassword,
                 newPassword: values.newPassword
               });
-              
+
               setSnackbarMessage('Password updated successfully');
               setSnackbarOpen(true);
               setPasswordResetOpen(false);
@@ -518,7 +518,7 @@ export default function DoctorProfile() {
                 <DialogContentText className="dialog-text">
                   To reset your password, please enter your current password and choose a new secure password.
                 </DialogContentText>
-                
+
                 <Grid container spacing={2} className="password-form-container">
                   <Grid item xs={12}>
                     <TextField
@@ -535,7 +535,7 @@ export default function DoctorProfile() {
                       className="password-field"
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
@@ -551,7 +551,7 @@ export default function DoctorProfile() {
                       className="password-field"
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
@@ -570,8 +570,8 @@ export default function DoctorProfile() {
                 </Grid>
               </DialogContent>
               <DialogActions className="dialog-actions">
-                <Button 
-                  onClick={() => setPasswordResetOpen(false)} 
+                <Button
+                  onClick={() => setPasswordResetOpen(false)}
                   color="primary"
                   className="cancel-button"
                 >
@@ -591,7 +591,7 @@ export default function DoctorProfile() {
           )}
         </Formik>
       </Dialog>
-      
+
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}

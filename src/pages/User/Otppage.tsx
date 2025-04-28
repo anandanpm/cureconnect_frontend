@@ -1,18 +1,18 @@
 'use client'
 
-import  { useState, useRef, useEffect, KeyboardEvent, ClipboardEvent } from 'react'
-import Image from '../../assets/otp-image.gif' 
+import { useState, useRef, useEffect, KeyboardEvent, ClipboardEvent } from 'react'
+import Image from '../../assets/otp-image.gif'
 import './Otppage.scss'
 import axios from 'axios'
-import { sendOtpData,resendOtpData } from '../../api/userApi'
+import { sendOtpData, resendOtpData } from '../../api/userApi'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 
 interface RootState {
-  user: {
-    email: string;
-  };
+    user: {
+        email: string;
+    };
 }
 
 export default function OTPVerification() {
@@ -23,7 +23,7 @@ export default function OTPVerification() {
     const [error, setError] = useState<string | null>(null)
     const email = useSelector((state: RootState) => state.user.email)
     const navigate = useNavigate()
- 
+
 
     useEffect(() => {
         let intervalId: NodeJS.Timeout | null = null;
@@ -78,7 +78,7 @@ export default function OTPVerification() {
     const handleResend = async () => {
         if (!isActive) {
             try {
-                console.log(email,'this is from the front end')
+                console.log(email, 'this is from the front end')
                 await resendOtpData(email)
                 setTimer(60);
                 setIsActive(true);
@@ -95,7 +95,7 @@ export default function OTPVerification() {
         const otpString = otp.join('')
         if (otpString.length === 4) {
             try {
-                const response = await sendOtpData({email,otpString})
+                const response = await sendOtpData({ email, otpString })
                 if (response.status === 200) {
                     console.log('OTP verified successfully')
                     navigate('/login')

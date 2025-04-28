@@ -25,7 +25,7 @@ import { styled } from '@mui/material/styles'
 import { RootState, AppDispatch } from '../../redux/store'
 import { updateProfile } from '../../redux/userSlice'
 import { uploadImageToCloudinary } from '../../services/Cloudinary'
-import {resetPassword} from '../../api/userApi'
+import { resetPassword } from '../../api/userApi'
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -124,12 +124,12 @@ export default function Profile() {
     if (file) {
       const previewUrl = URL.createObjectURL(file)
       setPreviewImage(previewUrl)
-      
+
       setUploading(true)
       try {
         const imageUrl = await uploadImageToCloudinary(file)
         console.log('Uploaded image URL:', imageUrl)
-        
+
         await dispatch(updateProfile({
           username: formValues.userName,
           email: formValues.email,
@@ -138,7 +138,7 @@ export default function Profile() {
           gender: formValues.gender,
           address: formValues.address,
           profile_pic: imageUrl,
-          _id:user._id
+          _id: user._id
         })).unwrap()
 
         setPreviewImage(imageUrl)
@@ -170,7 +170,7 @@ export default function Profile() {
               age: values.age,
               gender: values.gender,
               address: values.address,
-              _id:user._id
+              _id: user._id
             })).unwrap()
             console.log('Update Profile Response:', Response);
             setSnackbarMessage('Profile updated successfully')
@@ -215,7 +215,7 @@ export default function Profile() {
                       variant="contained"
                       size="small"
                       disabled={uploading}
-                      sx={{ 
+                      sx={{
                         bgcolor: '#008080',
                         '&:hover': { bgcolor: '#006666' }
                       }}
@@ -365,18 +365,18 @@ export default function Profile() {
       </Formik>
 
       {/* Password Reset Modal */}
-      <Dialog 
-        open={passwordResetOpen} 
+      <Dialog
+        open={passwordResetOpen}
         onClose={() => setPasswordResetOpen(false)}
         maxWidth="sm"
         fullWidth
       >
         <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           Reset Password
-          <IconButton 
-            edge="end" 
-            color="inherit" 
-            onClick={() => setPasswordResetOpen(false)} 
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={() => setPasswordResetOpen(false)}
             aria-label="close"
           >
             <CloseIcon />
@@ -396,7 +396,7 @@ export default function Profile() {
                 oldPassword: values.oldPassword,
                 newPassword: values.newPassword
               });
-              
+
               setSnackbarMessage('Password updated successfully');
               setSnackbarOpen(true);
               setPasswordResetOpen(false);
@@ -427,7 +427,7 @@ export default function Profile() {
                 <DialogContentText sx={{ mb: 3 }}>
                   To reset your password, please enter your current password and choose a new password.
                 </DialogContentText>
-                
+
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
@@ -443,7 +443,7 @@ export default function Profile() {
                       helperText={touched.oldPassword && errors.oldPassword}
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
@@ -458,7 +458,7 @@ export default function Profile() {
                       helperText={touched.newPassword && errors.newPassword}
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
@@ -476,8 +476,8 @@ export default function Profile() {
                 </Grid>
               </DialogContent>
               <DialogActions sx={{ px: 3, pb: 3, pt: 1 }}>
-                <Button 
-                  onClick={() => setPasswordResetOpen(false)} 
+                <Button
+                  onClick={() => setPasswordResetOpen(false)}
                   color="primary"
                 >
                   Cancel
@@ -487,7 +487,7 @@ export default function Profile() {
                   variant="contained"
                   color="primary"
                   disabled={isSubmitting}
-                  sx={{ 
+                  sx={{
                     bgcolor: '#008080',
                     '&:hover': { bgcolor: '#006666' }
                   }}

@@ -51,7 +51,7 @@ const DoctorLoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { loading, error, isActive } = useSelector((state: RootState) => state.doctor);
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
-  
+
   // Snackbar state
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -98,7 +98,7 @@ const DoctorLoginPage: React.FC = () => {
     try {
       const decoded: DecodedGoogleCredential = jwtDecode(credentialResponse.credential);
       console.log('Decoded Google credential:', decoded);
-      
+
       await dispatch(googleAuthDoctor(credentialResponse.credential) as any);
       setSnackbarSeverity('success');
       setSnackbarMessage('Google sign-in successful!');
@@ -179,8 +179,8 @@ const DoctorLoginPage: React.FC = () => {
             </a>
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="login-button"
             disabled={isSubmitting || loading || Object.keys(errors).length > 0}
           >
@@ -226,9 +226,9 @@ const DoctorLoginPage: React.FC = () => {
         </Alert>
       </Snackbar>
       <ForgotDocPasswordModal
-              isOpen={isForgotPasswordOpen}
-              onClose={() => setIsForgotPasswordOpen(false)}
-            />
+        isOpen={isForgotPasswordOpen}
+        onClose={() => setIsForgotPasswordOpen(false)}
+      />
     </div>
   );
 };

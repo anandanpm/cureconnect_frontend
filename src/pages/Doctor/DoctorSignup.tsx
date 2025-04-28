@@ -3,13 +3,13 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { signupDoctor, clearError,googleAuthDoctor } from '../../redux/doctorSlice';
+import { signupDoctor, clearError, googleAuthDoctor } from '../../redux/doctorSlice';
 import { RootState, AppDispatch } from '../../redux/store';
 import { Snackbar, Alert } from '@mui/material';
 import './DoctorSignup.scss';
 import { Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const validationSchema = Yup.object({
   username: Yup.string()
@@ -71,7 +71,7 @@ export default function DoctorSignupForm() {
           email: values.email,
           password: values.password,
         })).unwrap();
-        
+
         setSnackbarSeverity('success');
         setSnackbarMessage('Signup successful! OTP has been sent to your email.');
         setSnackbarOpen(true);
@@ -95,7 +95,7 @@ export default function DoctorSignupForm() {
       setSnackbarSeverity('success');
       setSnackbarMessage('Google sign-in successful!');
       setSnackbarOpen(true);
-      navigate('/doctor'); 
+      navigate('/doctor');
     } catch (error: any) {
       console.error('Google sign-in error:', error);
       setSnackbarSeverity('error');
@@ -186,9 +186,9 @@ export default function DoctorSignupForm() {
             </div>
           )}
         </div>
-        <button 
-          type="submit" 
-          className="signup-button" 
+        <button
+          type="submit"
+          className="signup-button"
           disabled={formik.isSubmitting || !formik.isValid || loading}
         >
           {loading ? 'Signing up...' : 'Register as Doctor'}
@@ -207,7 +207,7 @@ export default function DoctorSignupForm() {
             }}
             useOneTap
           />
-          </div>
+        </div>
 
         <div className="login-link">
           Already have an account? <Link to="/doctor-login">Login</Link>
@@ -220,8 +220,8 @@ export default function DoctorSignupForm() {
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert 
-          onClose={handleSnackbarClose} 
+        <Alert
+          onClose={handleSnackbarClose}
           severity={snackbarSeverity}
           sx={{ width: '100%' }}
         >

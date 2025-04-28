@@ -1,226 +1,9 @@
-// .booking-history {
-//     max-width: 1200px;
-//     margin: 0 auto;
-//     padding: 2rem;
-    
-//     h1 {
-//       text-align: center;
-//       margin-bottom: 2rem;
-//       color: #1976d2;
-//     }
-    
-//     .filter-options {
-//       display: flex;
-//       justify-content: center;
-//       margin-bottom: 2rem;
-      
-//       .filter-button {
-//         margin: 0 0.5rem;
-//         min-width: 100px;
-//       }
-//     }
-  
-//     .appointments-container {
-//       display: flex;
-//       flex-direction: column;
-//       gap: 1.5rem;
-//     }
-  
-//     .appointment-card {
-//       background-color: #f9f9f9;
-//       border-radius: 8px;
-//       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-//       padding: 1.5rem;
-//       display: flex;
-//       flex-direction: column;
-//       transition: transform 0.2s, box-shadow 0.2s;
-      
-//       &:hover {
-//         transform: translateY(-5px);
-//         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-//       }
-      
-//       &.cancelled {
-//         border-left: 5px solid #f44336;
-//       }
-      
-//       &.completed {
-//         border-left: 5px solid #4caf50;
-//       }
-      
-//       .details-container {
-//         display: flex;
-//         flex-wrap: wrap;
-//         gap: 2rem;
-//         margin-bottom: 1.5rem;
-        
-//         @media (max-width: 768px) {
-//           flex-direction: column;
-//           gap: 1rem;
-//         }
-        
-//         .doctor-info, .appointment-info {
-//           flex: 1;
-//           min-width: 250px;
-          
-//           h2 {
-//             font-size: 1.2rem;
-//             margin-bottom: 1rem;
-//             color: #333;
-//             border-bottom: 1px solid #eee;
-//             padding-bottom: 0.5rem;
-//           }
-          
-//           p {
-//             margin: 0.5rem 0;
-            
-//             strong {
-//               color: #555;
-//             }
-//           }
-//         }
-//       }
-      
-//       .action-buttons {
-//         display: flex;
-//         flex-wrap: wrap;
-//         gap: 1rem;
-//         justify-content: flex-end;
-        
-//         @media (max-width: 768px) {
-//           justify-content: center;
-//         }
-        
-//         .action-button {
-//           min-width: 150px;
-          
-//           &.details {
-//             background-color: #5c6bc0;
-            
-//             &:hover {
-//               background-color: #3f51b5;
-//             }
-//           }
-//         }
-//       }
-//     }
-  
-//     .status {
-//       display: inline-block;
-//       padding: 0.25rem 0.75rem;
-//       border-radius: 1rem;
-//       font-size: 0.85rem;
-//       font-weight: 600;
-      
-//       &.cancelled {
-//         background-color: #ffebee;
-//         color: #d32f2f;
-//       }
-      
-//       &.completed {
-//         background-color: #e8f5e9;
-//         color: #2e7d32;
-//       }
-//     }
-  
-//     .no-appointments {
-//       text-align: center;
-//       padding: 3rem;
-//       background-color: #f5f5f5;
-//       border-radius: 8px;
-//       margin-top: 2rem;
-      
-//       p {
-//         color: #757575;
-//         font-size: 1.1rem;
-//       }
-//     }
-  
-//     .pagination {
-//       display: flex;
-//       justify-content: center;
-//       align-items: center;
-//       margin-top: 2rem;
-//       gap: 0.5rem;
-//     }
-  
-//     // Modal styles
-//     .modal-overlay {
-//       position: fixed;
-//       top: 0;
-//       left: 0;
-//       right: 0;
-//       bottom: 0;
-//       background-color: rgba(0, 0, 0, 0.5);
-//       display: flex;
-//       justify-content: center;
-//       align-items: center;
-//       z-index: 1000;
-//     }
-  
-//     .modal-content {
-//       background-color: white;
-//       border-radius: 8px;
-//       padding: 2rem;
-//       width: 90%;
-//       max-width: 800px;
-//       max-height: 90vh;
-//       overflow-y: auto;
-      
-//       h2 {
-//         text-align: center;
-//         margin-bottom: 1.5rem;
-//         color: #1976d2;
-//       }
-      
-//       .modal-body {
-//         margin-bottom: 1.5rem;
-        
-//         .appointment-details-grid {
-//           display: grid;
-//           grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-//           gap: 1.5rem;
-          
-//           .detail-section {
-//             h3 {
-//               font-size: 1.1rem;
-//               color: #555;
-//               margin-bottom: 0.75rem;
-//               border-bottom: 1px solid #eee;
-//               padding-bottom: 0.25rem;
-//             }
-            
-//             p {
-//               margin: 0.5rem 0;
-//             }
-            
-//             &.full-width {
-//               grid-column: 1 / -1;
-//               margin-top: 1rem;
-//               padding-top: 1rem;
-//               border-top: 1px solid #eee;
-//             }
-//           }
-//         }
-//       }
-      
-//       .modal-actions {
-//         display: flex;
-//         justify-content: center;
-        
-//         button {
-//           min-width: 120px;
-//         }
-//       }
-//     }
-//   }
-
 .booking-history {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  
+
   h1 {
     text-align: center;
     margin-bottom: 2.5rem;
@@ -228,7 +11,7 @@
     font-weight: 700;
     font-size: 2.2rem;
     position: relative;
-    
+
     &:after {
       content: '';
       position: absolute;
@@ -241,13 +24,13 @@
       border-radius: 2px;
     }
   }
-  
+
   .filter-options {
     display: flex;
     justify-content: center;
     margin-bottom: 2.5rem;
     gap: 1rem;
-    
+
     .filter-button {
       min-width: 120px;
       border-radius: 8px;
@@ -257,7 +40,7 @@
       text-transform: none;
       letter-spacing: 0.5px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-      
+
       &:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
@@ -281,7 +64,7 @@
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
     overflow: hidden;
-    
+
     &:before {
       content: '';
       position: absolute;
@@ -291,17 +74,17 @@
       width: 6px;
       background-color: #94a3b8;
     }
-    
+
     &:hover {
       transform: translateY(-5px);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     }
-    
+
     &.cancelled {
       &:before {
         background-color: #ef4444;
       }
-      
+
       &:after {
         content: '✕';
         position: absolute;
@@ -313,12 +96,12 @@
         opacity: 0.5;
       }
     }
-    
+
     &.completed {
       &:before {
         background-color: #10b981;
       }
-      
+
       &:after {
         content: '✓';
         position: absolute;
@@ -330,22 +113,23 @@
         opacity: 0.5;
       }
     }
-    
+
     .details-container {
       display: flex;
       flex-wrap: wrap;
       gap: 2.5rem;
       margin-bottom: 1.8rem;
-      
+
       @media (max-width: 768px) {
         flex-direction: column;
         gap: 1.5rem;
       }
-      
-      .doctor-info, .appointment-info {
+
+      .doctor-info,
+      .appointment-info {
         flex: 1;
         min-width: 250px;
-        
+
         h2 {
           font-size: 1.25rem;
           margin-bottom: 1.2rem;
@@ -354,7 +138,7 @@
           border-bottom: 2px solid #f1f5f9;
           padding-bottom: 0.7rem;
           position: relative;
-          
+
           &:after {
             content: '';
             position: absolute;
@@ -365,14 +149,14 @@
             background-color: #2563eb;
           }
         }
-        
+
         p {
           margin: 0.7rem 0;
           color: #475569;
           font-size: 0.95rem;
           display: flex;
           align-items: center;
-          
+
           strong {
             color: #334155;
             font-weight: 600;
@@ -382,18 +166,18 @@
         }
       }
     }
-    
+
     .action-buttons {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
       justify-content: flex-end;
       margin-top: 0.5rem;
-      
+
       @media (max-width: 768px) {
         justify-content: center;
       }
-      
+
       .action-button {
         min-width: 150px;
         border-radius: 8px;
@@ -402,10 +186,10 @@
         text-transform: none;
         letter-spacing: 0.5px;
         transition: all 0.3s ease;
-        
+
         &.details {
           background-color: #4f46e5;
-          
+
           &:hover {
             background-color: #4338ca;
             box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
@@ -423,22 +207,22 @@
     font-size: 0.85rem;
     font-weight: 600;
     line-height: 1;
-    
+
     &.cancelled {
       background-color: #fee2e2;
       color: #b91c1c;
-      
+
       &:before {
         content: '•';
         margin-right: 5px;
         font-size: 1.2rem;
       }
     }
-    
+
     &.completed {
       background-color: #d1fae5;
       color: #047857;
-      
+
       &:before {
         content: '•';
         margin-right: 5px;
@@ -454,7 +238,7 @@
     border-radius: 12px;
     margin-top: 2rem;
     border: 1px dashed #cbd5e1;
-    
+
     p {
       color: #64748b;
       font-size: 1.1rem;
@@ -479,13 +263,25 @@
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
   }
 
   @keyframes slideUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 
   .modal-content {
@@ -498,7 +294,7 @@
     overflow-y: auto;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     animation: slideUp 0.4s ease;
-    
+
     h2 {
       text-align: center;
       margin-bottom: 2rem;
@@ -506,7 +302,7 @@
       font-weight: 700;
       font-size: 1.8rem;
       position: relative;
-      
+
       &:after {
         content: '';
         position: absolute;
@@ -519,21 +315,21 @@
         border-radius: 2px;
       }
     }
-    
+
     .modal-body {
       margin-bottom: 2rem;
-      
+
       .appointment-details-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 2rem;
-        
+
         .detail-section {
           background-color: #f8fafc;
           padding: 1.5rem;
           border-radius: 12px;
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-          
+
           h3 {
             font-size: 1.15rem;
             color: #334155;
@@ -542,7 +338,7 @@
             border-bottom: 1px solid #e2e8f0;
             padding-bottom: 0.5rem;
             position: relative;
-            
+
             &:after {
               content: '';
               position: absolute;
@@ -553,12 +349,12 @@
               background-color: #2563eb;
             }
           }
-          
+
           p {
             margin: 0.7rem 0;
             color: #475569;
             font-size: 0.95rem;
-            
+
             strong {
               color: #334155;
               font-weight: 600;
@@ -566,7 +362,7 @@
               display: inline-block;
             }
           }
-          
+
           &.full-width {
             grid-column: 1 / -1;
             margin-top: 1rem;
@@ -577,11 +373,11 @@
         }
       }
     }
-    
+
     .modal-actions {
       display: flex;
       justify-content: center;
-      
+
       button {
         min-width: 140px;
         border-radius: 8px;
@@ -591,7 +387,7 @@
         text-transform: none;
         letter-spacing: 0.5px;
         transition: all 0.3s ease;
-        
+
         &:hover {
           background-color: #1d4ed8;
           box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
@@ -601,4 +397,3 @@
     }
   }
 }
-

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signupUser, clearError, googleAuth } from '../../redux/userSlice';
 import { RootState, AppDispatch } from '../../redux/store';
@@ -11,7 +11,7 @@ import './SignupPage.scss';
 import Googleimage from '../../assets/free-icon-google-300221 1.png';
 import { Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const validationSchema = Yup.object({
   username: Yup.string()
@@ -73,7 +73,7 @@ export default function SignupForm() {
           email: values.email,
           password: values.password,
         })).unwrap();
-        
+
         setSnackbarSeverity('success');
         setSnackbarMessage('Signup successful! OTP is sent to the email!');
         setSnackbarOpen(true);
@@ -186,9 +186,9 @@ export default function SignupForm() {
           )}
         </div>
 
-        <button 
-          type="submit" 
-          className="signup-button" 
+        <button
+          type="submit"
+          className="signup-button"
           disabled={formik.isSubmitting || !formik.isValid || loading}
         >
           {loading ? 'Signing up...' : 'Signup'}
@@ -224,8 +224,8 @@ export default function SignupForm() {
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert 
-          onClose={handleSnackbarClose} 
+        <Alert
+          onClose={handleSnackbarClose}
           severity={snackbarSeverity}
           sx={{ width: '100%' }}
         >

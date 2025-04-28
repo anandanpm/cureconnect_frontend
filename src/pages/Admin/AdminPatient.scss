@@ -1,11 +1,9 @@
-
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 .patient-list {
   padding: 40px;
   font-family: 'Poppins', sans-serif;
-  
+
   &__title {
     font-size: 32px;
     font-weight: 600;
@@ -28,8 +26,9 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 15px;
-    
-    th, td {
+
+    th,
+    td {
       padding: 15px;
       text-align: left;
       vertical-align: middle;
@@ -164,7 +163,8 @@
     &__table {
       font-size: 14px;
 
-      th, td {
+      th,
+      td {
         padding: 10px;
       }
     }
@@ -174,4 +174,3 @@
     flex-wrap: wrap;
   }
 }
-

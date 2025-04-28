@@ -7,6 +7,7 @@ import SignupPage from "../pages/User/SignupPage";
 import Otppage from "../pages/User/Otppage";
 import LoginPage from "../pages/User/LoginPage";
 import About from "../pages/User/About";
+import Contact from '../pages/User/Contact';
 import DocMainpage from "../pages/Doctor/DoctorMainpage";
 import Docsignup from "../pages/Doctor/DoctorSignup";
 import DocOtp from "../pages/Doctor/DoctorOtp";
@@ -23,6 +24,7 @@ import DoctorSlot from "../pages/Doctor/DoctorSlot";
 import AdminVerifyDoctor from '../pages/Admin/AdminVerifyDoctor';
 import AppointmentPage from '../pages/User/AppointmentPage';
 import AppointmentDetail from '../pages/User/BookAppointment';
+import Chathistory from '../pages/User/Chathistory';
 import DoctorAppointment from '../pages/Doctor/DoctorPatient';
 import AppointmentSuccess from '../pages/User/AppointmentSuccess';
 import BookingHistory from '../pages/User/PreviousAppointment'
@@ -53,49 +55,49 @@ export const routes: RouteObject[] = [
       { index: true, element: <AdminDashboard /> },
     ],
   },
-  { 
-    path: "/admin/patients", 
-    element: ( 
-      <ProtectedRoute adminOnly> 
-        <AdminLayout /> 
-      </ProtectedRoute> 
-    ), 
-    children: [ 
-      { index: true, element: <AdminPatient /> } 
-    ] 
+  {
+    path: "/admin/patients",
+    element: (
+      <ProtectedRoute adminOnly>
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <AdminPatient /> }
+    ]
   },
-  { 
-    path: "/admin/doctors", 
-    element: ( 
-      <ProtectedRoute adminOnly> 
-        <AdminLayout /> 
-      </ProtectedRoute> 
-    ), 
-    children: [ 
-      { index: true, element: <AdminDoctor /> } 
-    ] 
+  {
+    path: "/admin/doctors",
+    element: (
+      <ProtectedRoute adminOnly>
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <AdminDoctor /> }
+    ]
   },
-  { 
-    path: "/admin/review", 
-    element: ( 
-      <ProtectedRoute adminOnly> 
-        <AdminLayout /> 
-      </ProtectedRoute> 
-    ), 
-    children: [ 
-      { index: true, element: <AdminReview/> } 
-    ] 
+  {
+    path: "/admin/review",
+    element: (
+      <ProtectedRoute adminOnly>
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <AdminReview /> }
+    ]
   },
-  { 
-    path: "/admin/verify-doctor", 
-    element: ( 
-      <ProtectedRoute adminOnly> 
-        <AdminLayout /> 
-      </ProtectedRoute> 
-    ), 
-    children: [ 
-      { index: true, element: <AdminVerifyDoctor/> } 
-    ] 
+  {
+    path: "/admin/verify-doctor",
+    element: (
+      <ProtectedRoute adminOnly>
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <AdminVerifyDoctor /> }
+    ]
   },
 
   // User Routes with layout
@@ -107,9 +109,11 @@ export const routes: RouteObject[] = [
       { path: "signup", element: <SignupPage /> },
       { path: "login", element: <LoginPage /> },
       { path: "about", element: <About /> },
-      {path:'doctordetails',element:<DoctorPage/>},
-      {path:"/chat/:appointmentId",element:<Chat/>},
-      {path:"/video-call/:appointmentId/:roomId",element:<Vediocall/>},
+      {path:'contact', element: <Contact />},
+      { path: 'doctordetails', element: <DoctorPage /> },
+      { path: "/chat/:appointmentId", element: <Chat /> },
+      {path:'chathistory/:appointmentId', element: <Chathistory />},
+      { path: "/video-call/:appointmentId/:roomId", element: <Vediocall /> },
 
       {
         path: "profile",
@@ -131,7 +135,7 @@ export const routes: RouteObject[] = [
         path: "appointment",
         element: (
           <ProtectedRoute userOnly>
-            <AppointmentDetail/>
+            <AppointmentDetail />
           </ProtectedRoute>
         ),
       },
@@ -139,7 +143,7 @@ export const routes: RouteObject[] = [
         path: "appointment-success",
         element: (
           <ProtectedRoute userOnly>
-            <AppointmentSuccess/>
+            <AppointmentSuccess />
           </ProtectedRoute>
         ),
       },
@@ -147,7 +151,7 @@ export const routes: RouteObject[] = [
         path: "historyappointment",
         element: (
           <ProtectedRoute userOnly>
-            <BookingHistory/>
+            <BookingHistory />
           </ProtectedRoute>
         ),
       },
@@ -155,7 +159,7 @@ export const routes: RouteObject[] = [
         path: "prescriptions/:appointmentid",
         element: (
           <ProtectedRoute userOnly>
-            <PrescriptionDetails/>
+            <PrescriptionDetails />
           </ProtectedRoute>
         ),
       },
@@ -163,7 +167,7 @@ export const routes: RouteObject[] = [
         path: "review/:appointmentid",
         element: (
           <ProtectedRoute userOnly>
-            <Review/>
+            <Review />
           </ProtectedRoute>
         ),
       },
@@ -178,8 +182,8 @@ export const routes: RouteObject[] = [
       { index: true, element: <DocMainpage /> },
       { path: "signup", element: <Docsignup /> },
       { path: "login", element: <Doclogin /> },
-      {path:'chat/:appointmentId',element:<DocChat/>},
-      {path:'video-call/:appointmentId/:roomId',element:<Vediocall/>},
+      { path: 'chat/:appointmentId', element: <DocChat /> },
+      { path: 'video-call/:appointmentId/:roomId', element: <Vediocall /> },
       {
         path: "profile",
         element: (
@@ -192,7 +196,7 @@ export const routes: RouteObject[] = [
         path: "appointment",
         element: (
           <ProtectedRoute doctorOnly>
-            <DoctorSlot/>
+            <DoctorSlot />
           </ProtectedRoute>
         ),
       },
@@ -200,7 +204,7 @@ export const routes: RouteObject[] = [
         path: "patient",
         element: (
           <ProtectedRoute doctorOnly>
-            <DoctorAppointment/>
+            <DoctorAppointment />
           </ProtectedRoute>
         ),
       },
@@ -208,7 +212,7 @@ export const routes: RouteObject[] = [
         path: "dashboard",
         element: (
           <ProtectedRoute doctorOnly>
-            <DoctorDashboard/>
+            <DoctorDashboard />
           </ProtectedRoute>
         ),
       },
@@ -216,7 +220,7 @@ export const routes: RouteObject[] = [
         path: "prescription/:appointmentId",
         element: (
           <ProtectedRoute doctorOnly>
-            <Prescription/>
+            <Prescription />
           </ProtectedRoute>
         ),
       },

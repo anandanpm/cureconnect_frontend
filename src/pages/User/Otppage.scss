@@ -14,7 +14,7 @@
     width: 100%;
     max-width: 400px;
     text-align: center;
-    animation: fadeIn 0.5s ease-in-out; 
+    animation: fadeIn 0.5s ease-in-out;
 
     h1 {
       color: #333;
@@ -24,6 +24,7 @@
 
     .illustration {
       margin: 1.5rem 0;
+
       img {
         max-width: 200px;
         height: auto;
@@ -84,7 +85,8 @@
     }
 
     .submit-button {
-      background-color: #009688; /* Lexa-terra color */
+      background-color: #009688;
+      /* Lexa-terra color */
       color: white;
       border: none;
       border-radius: 25px;
@@ -97,7 +99,8 @@
       transition: background-color 0.2s ease;
 
       &:hover {
-        background-color: darken(#009688, 5%); /* Adjust darken amount as needed */
+        background-color: darken(#009688, 5%);
+        /* Adjust darken amount as needed */
       }
 
       &:disabled {
@@ -131,6 +134,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

@@ -63,7 +63,7 @@ const AdminLogin: React.FC = () => {
         <div className="logo">
           <img src={companyLogo} alt="Curaconnect" />
         </div>
-        
+
         <div className="lock-illustration">
           <img src={lockImage} alt="Security Lock" />
         </div>
@@ -103,8 +103,8 @@ const AdminLogin: React.FC = () => {
             )}
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="login-button"
             disabled={formik.isSubmitting || loading}
           >
